@@ -1,6 +1,51 @@
 import { Loader, Rectangle, Texture } from "pixi.js";
 
-export default function bubbleFactory() {
+interface TBubbleTextures {
+
+    empty: Texture,
+
+    RANBOW: Texture[],
+    BLUE: Texture[],
+    BLACK: Texture[],
+    RED: Texture[],
+    DARK_RED: Texture[],
+    RED_AND_BLUE: Texture[],
+    SOAP: Texture[],
+    Skulls: Texture[],
+    black_flame: Texture[],
+    ocean: Texture[],
+
+    shodow: Texture,
+
+    // 爆炸动画
+    boom_ani_3: Texture,
+    boom_ani_2: Texture,
+    boom_ani_1: Texture,
+
+    // // 向上爆炸的水柱动画
+    boom_up_1: Texture,
+    boom_up_2: Texture,
+    boom_up_3: Texture,
+    boom_up_4: Texture,
+    boom_up_end_1: Texture,
+    boom_up_end_2: Texture,
+    boom_up_end_3: Texture,
+    boom_up_end_4: Texture,
+
+    // // 向下爆炸的水柱动画
+    boom_down_1: Texture,
+    boom_down_2: Texture,
+    boom_down_3: Texture,
+    boom_down_4: Texture,
+    boom_down_end_1: Texture,
+    boom_down_end_2: Texture,
+    boom_down_end_3: Texture,
+    boom_down_end_4: Texture,
+
+}
+
+let cache: TBubbleTextures
+export default function bubbleFactory(): TBubbleTextures {
     const texture1 = Loader.shared.resources['assets/custom_bubble_95.png'].texture
     const texture2 = Loader.shared.resources['assets/custom_bubble_96.png'].texture
     const texture3 = Loader.shared.resources['assets/custom_bubble_97.png'].texture
@@ -26,7 +71,7 @@ export default function bubbleFactory() {
         ]
     }
 
-    return {
+    return cache = cache || {
 
         empty: new Texture(baseTexture, new Rectangle(0, 0, 40, 40)),
 
@@ -67,6 +112,6 @@ export default function bubbleFactory() {
         boom_down_end_2: new Texture(baseTexture, new Rectangle(86, 260, 38, 38)),
         boom_down_end_3: new Texture(baseTexture, new Rectangle(145, 260, 38, 38)),
         boom_down_end_4: new Texture(baseTexture, new Rectangle(202, 260, 38, 38)),
-        
+
     }
 }

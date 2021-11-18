@@ -12,7 +12,7 @@ export default class Editor extends Stage {
     // 选择主题
     // init theme picker
     const themePicker = new ThemePicker(STAGE_WIDTH * 0.8, STAGE_HEIGHT * 0.8)
-    themePicker.onClose(this.initMap.bind(this))
+    themePicker.onClose(this.onCancelThemeSelect.bind(this))
     themePicker.onSelected(this.initMap.bind(this))
 
 
@@ -36,7 +36,7 @@ export default class Editor extends Stage {
   }
 
   onCancelThemeSelect(){
-    this.parent as 
+    // 跳转往主页
   }
 
 

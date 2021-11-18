@@ -7,8 +7,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^18.6.4",
     "globby": "^11.0.4",
     "gulp": "^4.0.2",
+    "pixi-tween": "^0.2.0",
     "pixi.js": "^6.2.0",
     "vue": "^3.2.16"
   },
