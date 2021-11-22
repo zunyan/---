@@ -18,6 +18,8 @@ export default new class App extends Application {
 
         this.ticker.add(() => {
             const fn = function (obj: any) {
+                obj.sortChildren()
+
                 obj.children.forEach((item: any) => {
                     if (item.onUpdate) {
                         item.onUpdate()

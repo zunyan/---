@@ -20,6 +20,12 @@ interface TPersonTextureMap {
     right_5: Texture,
 }
 
+interface Item {
+    floor: string,
+    top: string,
+    type: boolean,
+}
+
 type TBubbleStyle = "RANBOW" |
     "BLUE" |
     "BLACK" |

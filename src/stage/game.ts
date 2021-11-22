@@ -1,7 +1,7 @@
-import { DisplayObject, Graphics } from "pixi.js";
+import { DisplayObject, Graphics, Sprite, utils } from "pixi.js";
 import app from "../app";
-import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
-import { TBubbleStyle } from "../global";
+import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_WIDTH_BOX2, GRID_HEIGHT_BOX2, GRID_HEIGHT_BOX3, GRID_WIDTH_BOX3 } from "../constant";
+import { Item, TBubbleStyle } from "../global";
 import Block from "../sprites/block";
 import Bubble from "../sprites/bubble";
 import Person from "../sprites/person";
@@ -11,6 +11,7 @@ import Stage from "./stage";
 import * as TWEEN from '@tweenjs/tween.js'
 import PlayerList from "../sprites/playerList";
 import Timer from "../sprites/timer";
+import { priateMap } from '../map/pirate'
 
 export default class GameStage extends Stage {
 
@@ -22,6 +23,36 @@ export default class GameStage extends Stage {
     super()
 
     // 渲染框架
+    const box1 = new Graphics()
+    box1.beginFill(utils.rgb2hex([2 / 255, 94 / 255, 161 / 255]));
+    box1.drawRect(0, 0, STAGE_WIDTH, STAGE_HEIGHT)
+
+    box1.beginFill(0x000000);
+    box1.drawRect(20, 100, GRID_WIDTH_BOX2, GRID_HEIGHT_BOX2)
+
+    box1.beginFill(utils.rgb2hex([100 / 255, 100 / 255, 96 / 255]));
+    box1.drawRect(28, 105, GRID_WIDTH_BOX3, GRID_HEIGHT_BOX3)
+
+    priateMap.forEach((item: Item[], index) => {
+      item.forEach((_item: Item, _index) => {
+        const floor = new Sprite((mapFactory().map_pirate as any)[_item.floor])
+        floor.x = _index * GRID_WIDTH + 28
+        floor.y = index * GRID_WIDTH + 105
+        floor.zIndex = 1
+
+        if(_item.top){
+          const block = new Sprite((mapFactory().map_pirate as any)[_item.top])
+          block.x = _index * GRID_WIDTH + 28
+          block.y = index * GRID_WIDTH + 105
+          box1.addChild(block)
+          block.zIndex = 2
+        }
+        box1.addChild(floor)
+      })
+    })
+
+    this.addChild(box1)
+
     // timer
     const timer = new Timer()
     timer.x = 100
@@ -30,11 +61,11 @@ export default class GameStage extends Stage {
     // playerlist
     const list = new PlayerList()
     this.addChild(list);
-    //
-  }
+  //   //
+  // }
 
-  temp() {
-    this.drawMap()
+  // temp() {
+  //   this.drawMap()
 
     this.person = new Person(20, 10)
 
@@ -108,7 +139,7 @@ export default class GameStage extends Stage {
   iCanGo(gridX: number, gridY: number): boolean {
     return gridX >= 0 && GRID_WIDTH_SIZE > gridX &&
       gridY >= 0 && GRID_HEIGHT_SIZE > gridY &&
-      this.map[gridX][gridY].canPass &&
+      // this.map[gridX][gridY].canPass &&
       !this.bubbles.some(item => item.gridX == gridX && item.gridY == gridY)
   }
 
