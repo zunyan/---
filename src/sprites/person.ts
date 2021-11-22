@@ -104,7 +104,7 @@ export default class Person extends Container {
   get moveTarget(): TPersonMoveTarget {
     return this._moveTarget
   }
-  
+
   handleKeydown(e: KeyboardEvent) {
     if (this.keyEvent.some(item => item == e.code)) {
       return
@@ -186,10 +186,23 @@ export default class Person extends Container {
       this.y = y
     }
 
+    const styles = [
+      'RANBOW',
+      'BLUE',
+      'BLACK',
+      'RED',
+      'DARK_RED',
+      'RED_AND_BLUE',
+      'SOAP',
+      'Skulls',
+      'black_flame',
+      'ocean'
+    ];
+
     (this.parent as GameStage).onCreateBubble(
       this.gridX,
       this.gridY,
-      this.bubbleStyle,
+      styles[Math.floor(Math.random() * (styles.length ))] as any, //this.bubbleStyle,
       20
     )
   }

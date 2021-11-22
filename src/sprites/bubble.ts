@@ -23,7 +23,7 @@ export default class Bubble extends Container {
         this.x = gridX * GRID_WIDTH + GRID_WIDTH / 2
         this.y = gridY * GRID_HEIGHT + GRID_HEIGHT / 2 - 5
         srpite.loop = true
-        srpite.animationSpeed = 0.14
+        srpite.animationSpeed = 0.1
         srpite.anchor.set(0.5, 0.5)
         srpite.play()
 
