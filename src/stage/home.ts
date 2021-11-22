@@ -2,6 +2,8 @@ import { Container, Graphics, Loader, Sprite } from "pixi.js";
 import app from "../app";
 import { COMMON_TEXTURE } from "../COMMON";
 import { STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
+import UIButton from "../sprites/UIButton";
+import btnFactory from "../textureFactory/btnfactory";
 import bubbleFactory from "../textureFactory/bubbleFactory";
 import GameStage from "./game";
 import Stage from "./stage";
@@ -15,13 +17,15 @@ export default class HomeStage extends Stage {
         bg.height = this.height
         this.addChild(bg)
 
-        const btn = new Sprite(bubbleFactory().BLACK[0])
-        btn.interactive = true
-        btn.width = 200
-        btn.height = 80
-        btn.on('click', ()=>{
+        const startButton = new UIButton(
+            "开始游戏",
+            btnFactory().blueBtn
+        )
+        startButton.on('click', () => {
             app.push(GameStage)
         })
-        this.addChild(btn)
+        startButton.x = this.width / 2
+        startButton.y = this.height - 100
+        this.addChild(startButton)
     }
 }

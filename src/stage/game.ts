@@ -115,25 +115,4 @@ export default class GameStage extends Stage {
   onUpdate() {
 
   }
-
-
-  onEnter() {
-    this.y = this.height
-    new TWEEN.Tween(this) // Create a new tween that modifies 'coords'.
-      .to(<Partial<DisplayObject>>{ y: 0 }, 150) // Move to (300, 200) in 1 second.
-      .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
-      .start() // Start the tween immediately.
-  }
-
-  async onLeave() {
-    return new Promise(resolve => {
-      new TWEEN.Tween(this) // Create a new tween that modifies 'coords'.
-        .to(<Partial<DisplayObject>>{ y: this.height }, 150) // Move to (300, 200) in 1 second.
-        .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
-        .start() // Start the tween immediately.
-        .onComplete(() => {
-          resolve(void 0)
-        })
-    })
-  }
 }
