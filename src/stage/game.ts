@@ -9,6 +9,8 @@ import bubbleFactory from "../textureFactory/bubbleFactory";
 import mapFactory from "../textureFactory/mapFactory";
 import Stage from "./stage";
 import * as TWEEN from '@tweenjs/tween.js'
+import PlayerList from "../sprites/playerList";
+import Timer from "../sprites/timer";
 
 export default class GameStage extends Stage {
 
@@ -19,13 +21,25 @@ export default class GameStage extends Stage {
   constructor() {
     super()
 
+    // 渲染框架
+    // timer
+    const timer = new Timer()
+    timer.x = 100
+    this.addChild(timer)
+
+    // playerlist
+    const list = new PlayerList()
+    this.addChild(list);
+    //
+  }
+
+  temp() {
     this.drawMap()
 
     this.person = new Person(20, 10)
 
     this.person.interactive = true
     this.person.on('click', () => {
-      console.info('1312')
       app.back()
     })
     this.addChild(this.person)
