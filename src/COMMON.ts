@@ -2,6 +2,7 @@
 export const COMMON_TEXTURE_LIST = [
   "assets/bazzi.png",
   "assets/bg.jpg",
+  "assets/btn_blue.png",
   "assets/custom_bubble_100.png",
   "assets/custom_bubble_101.png",
   "assets/custom_bubble_102.png",
@@ -23,6 +24,7 @@ export const COMMON_TEXTURE_LIST = [
 export enum COMMON_TEXTURE {
   'bazzi.png' = 'assets/bazzi.png',
 'bg.jpg' = 'assets/bg.jpg',
+'btn_blue.png' = 'assets/btn_blue.png',
 'custom_bubble_100.png' = 'assets/custom_bubble_100.png',
 'custom_bubble_101.png' = 'assets/custom_bubble_101.png',
 'custom_bubble_102.png' = 'assets/custom_bubble_102.png',
