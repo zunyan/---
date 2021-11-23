@@ -71,13 +71,15 @@ export default class GameContent extends Container {
     this.bubbles.push(bubble)
 
     await new Promise(resolve => setTimeout(resolve, 3500))
-    this.checkBoomt(bubble)
+    if(this.bubbles.some(item => bubble == item)){
+      this.checkBoomt(bubble)
+    }
   }
 
   async checkBoomt(bubble: Bubble) {
 
     const todoList: Bubble[] = [bubble]
-    const destoryBox = []
+    const destoryBox : Item[] = []
     const boomBubbles: {
       bubble: Bubble,
       left: number,
@@ -104,7 +106,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[gridY][gridX + right + 1]
         if (nextItem) {
-          if (nextItem.type) {
+          if(destoryBox.some(item => item == nextItem)){
+            break
+          }else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -125,7 +129,6 @@ export default class GameContent extends Container {
         if (right == item.power) {
           break
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
       }
       // 往左寻找
       while (1) {
@@ -141,7 +144,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if (nextItem.type) {
+          if(destoryBox.some(item => item == nextItem)){
+            break
+          }else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -162,7 +167,6 @@ export default class GameContent extends Container {
         if (left == item.power) {
           break
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
       }
       // 往上寻找
       while (1) {
@@ -178,7 +182,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if (nextItem.type) {
+          if(destoryBox.some(item => item == nextItem)){
+            break
+          }else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -197,7 +203,6 @@ export default class GameContent extends Container {
         if (top == item.power) {
           break
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
       }
       // 往下寻找
       while (1) {
@@ -213,7 +218,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if (nextItem.type) {
+          if(destoryBox.some(item => item == nextItem)){
+            break
+          }else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -232,7 +239,6 @@ export default class GameContent extends Container {
         if (bottom == item.power) {
           break
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
       }
 
       boomBubbles.push({

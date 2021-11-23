@@ -56,13 +56,13 @@ export default class Bubble extends Container {
   async boomLeft(l: number) {
     for (let i = 0; i <= l; i++) {
       const left = new AnimatedSprite([
-        bubbleFactory().boom_down_2,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_3,
-        bubbleFactory().boom_down_4,
-        bubbleFactory().boom_down_end_4,
+        bubbleFactory().boom_left_2,
+        bubbleFactory().boom_left_1,
+        bubbleFactory().boom_left_1,
+        bubbleFactory().boom_left_1,
+        bubbleFactory().boom_left_3,
+        bubbleFactory().boom_left_4,
+        bubbleFactory().boom_left_end_4,
         bubbleFactory().empty
       ], true)
 
@@ -84,13 +84,13 @@ export default class Bubble extends Container {
   async boomRight(l: number) {
     for (let i = 0; i <= l; i++) {
       const right = new AnimatedSprite([
-        bubbleFactory().boom_down_2,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_1,
-        bubbleFactory().boom_down_3,
-        bubbleFactory().boom_down_4,
-        bubbleFactory().boom_down_end_4,
+        bubbleFactory().boom_right_2,
+        bubbleFactory().boom_right_1,
+        bubbleFactory().boom_right_1,
+        bubbleFactory().boom_right_1,
+        bubbleFactory().boom_right_3,
+        bubbleFactory().boom_right_4,
+        bubbleFactory().boom_right_end_4,
         bubbleFactory().empty
       ], true)
 
