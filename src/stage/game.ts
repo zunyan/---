@@ -57,10 +57,21 @@ export default class GameStage extends Stage {
     content.y = 45
     this.addChild(content)
 
+    const leftBar = new Graphics()
+    leftBar.lineStyle({
+      color: 0x004a93,
+      width: 1
+    })
+    leftBar.beginFill(0x027ed8)
+    leftBar.drawRoundedRect(0, 0, 155, 540, 8)
+    leftBar.endFill()
+    leftBar.x = 638
+    leftBar.y = 35
+    this.addChild(leftBar)
     // timer
     const timer = new Timer()
 
-    timer.x = 100
+    timer.x = 645
     timer.y = 45
     this.addChild(timer)
 
@@ -74,8 +85,8 @@ export default class GameStage extends Stage {
       icon: bubbleFactory().RED[0],
       status: 'ALIVE'
     }])
-    list.x = 100
-    list.y = 100
+    list.x = 645
+    list.y = 80
     this.addChild(list);
     //   //
     // }
