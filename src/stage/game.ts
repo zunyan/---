@@ -24,11 +24,23 @@ export default class GameStage extends Stage {
     // 渲染框架
     // timer
     const timer = new Timer()
+
     timer.x = 100
+    timer.y = 45
     this.addChild(timer)
 
     // playerlist
-    const list = new PlayerList()
+    const list = new PlayerList([{
+      name: "name1",
+      icon: bubbleFactory().BLACK[0],
+      status: 'ALIVE'
+    },{
+      name: "name2",
+      icon: bubbleFactory().RED[0],
+      status: 'ALIVE'
+    }])
+    list.x = 100
+    list.y = 100
     this.addChild(list);
     //
   }
