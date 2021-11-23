@@ -42,6 +42,26 @@ interface TBubbleTextures {
     boom_down_end_3: Texture,
     boom_down_end_4: Texture,
 
+    // // 向左爆炸的水柱动画
+    boom_left_1: Texture,
+    boom_left_2: Texture,
+    boom_left_3: Texture,
+    boom_left_4: Texture,
+    boom_left_end_1: Texture,
+    boom_left_end_2: Texture,
+    boom_left_end_3: Texture,
+    boom_left_end_4: Texture,
+
+    //向右爆炸的水柱动画
+    boom_right_1: Texture,
+    boom_right_2: Texture,
+    boom_right_3: Texture,
+    boom_right_4: Texture,
+    boom_right_end_1: Texture,
+    boom_right_end_2: Texture,
+    boom_right_end_3: Texture,
+    boom_right_end_4: Texture,
+
 }
 
 let cache: TBubbleTextures
@@ -70,6 +90,10 @@ export default function bubbleFactory(): TBubbleTextures {
             new Texture(texture, new Rectangle(158, 21, 44, 41)),
         ]
     }
+
+
+
+    
 
     return cache = cache || {
 
@@ -112,6 +136,26 @@ export default function bubbleFactory(): TBubbleTextures {
         boom_down_end_2: new Texture(baseTexture, new Rectangle(86, 260, 38, 38)),
         boom_down_end_3: new Texture(baseTexture, new Rectangle(145, 260, 38, 38)),
         boom_down_end_4: new Texture(baseTexture, new Rectangle(202, 260, 38, 38)),
+
+        // // 向左爆炸的水柱动画-下 x相同
+        boom_left_1: new Texture(baseTexture, new Rectangle(446, 419, 38, 38)),
+        boom_left_2: new Texture(baseTexture, new Rectangle(389, 419, 38, 38)),
+        boom_left_3: new Texture(baseTexture, new Rectangle(335, 419, 38, 38)),
+        boom_left_4: new Texture(baseTexture, new Rectangle(271, 419, 38, 38)),
+        boom_left_end_1: new Texture(baseTexture, new Rectangle(28, 260, 38, 38)),
+        boom_left_end_2: new Texture(baseTexture, new Rectangle(86, 260, 38, 38)),
+        boom_left_end_3: new Texture(baseTexture, new Rectangle(145, 260, 38, 38)),
+        boom_left_end_4: new Texture(baseTexture, new Rectangle(202, 260, 38, 38)),
+
+        // // 向右爆炸的水柱动画
+        boom_right_1: new Texture(baseTexture, new Rectangle(446, 344, 38, 38)),
+        boom_right_2: new Texture(baseTexture, new Rectangle(389, 344, 38, 38)),
+        boom_right_3: new Texture(baseTexture, new Rectangle(335, 344, 38, 38)),
+        boom_right_4: new Texture(baseTexture, new Rectangle(271, 344, 38, 38)),
+        boom_right_end_1: new Texture(baseTexture, new Rectangle(28, 185, 38, 38)),
+        boom_right_end_2: new Texture(baseTexture, new Rectangle(86, 185, 38, 38)),
+        boom_right_end_3: new Texture(baseTexture, new Rectangle(145, 185, 38, 38)),
+        boom_right_end_4: new Texture(baseTexture, new Rectangle(202, 185, 38, 38)),
 
     }
 }
