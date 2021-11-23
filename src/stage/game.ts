@@ -48,13 +48,13 @@ export default class GameStage extends Stage {
     box1.beginFill(0x000);
     box1.drawRoundedRect(10, 10, GRID_WIDTH_BOX * GRID_WIDTH, GRID_HEIGHT_BOX * GRID_WIDTH, 8)
     box1.endFill()
-    box1.x = 8
-    box1.y = 22
+    box1.x = 10
+    box1.y = 35
     this.addChild(box1)
 
     const content = new GameContent(priateMap)
-    content.x = 18
-    content.y = 32
+    content.x = 20
+    content.y = 45
     this.addChild(content)
 
     // timer
@@ -80,5 +80,18 @@ export default class GameStage extends Stage {
     //   //
     // }
 
+
+    // // 道具栏
+    // const toolBar = new Graphics()
+    // toolBar.lineStyle({
+    //   width: 1,
+    //   color: 0x00489c
+    // })
+    // toolBar.beginFill(0x0095ef)
+    // toolBar.drawRoundedRect(0, 0, 350, 50, 14)
+    // toolBar.endFill()
+    // toolBar.x = 150
+    // toolBar.y = this.height - 38
+    // this.addChild(toolBar)
   }
 }
