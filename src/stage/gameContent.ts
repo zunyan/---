@@ -70,7 +70,7 @@ export default class GameContent extends Container {
     this.addChild(bubble)
     this.bubbles.push(bubble)
 
-    await new Promise(resolve => setTimeout(resolve, 4000))
+    await new Promise(resolve => setTimeout(resolve, 3500))
     this.checkBoomt(bubble)
   }
 
