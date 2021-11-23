@@ -22,6 +22,6 @@ document.documentElement.style.height = "100%"
 // LOADER
 COMMON_TEXTURE_LIST.forEach(<any>Loader.shared.add.bind(Loader.shared))
 Loader.shared.onComplete.once(()=>{
-    App.push(GameStage)
+    App.push(HomeStage)
 })
 Loader.shared.load()
