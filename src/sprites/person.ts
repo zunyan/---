@@ -20,7 +20,7 @@ export default class Person extends Container {
   sprite: AnimatedSprite;
   textureMap
   booms: any;
-  power: number = 1
+  power: number = 10
 
   // style setting
   bubbleStyle: TBubbleStyle = "RANBOW"

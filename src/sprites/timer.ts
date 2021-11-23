@@ -8,9 +8,8 @@ export default class Timer extends Container {
     time: any;
     constructor() {
         super()
-        const BOX_WIDHT = 200;
-        const BOX_HEIGHT = 50;
-        console.log(1111, this.timeRect)
+        const BOX_WIDHT = 140;
+        const BOX_HEIGHT = 30;
         let timeRect = this.timeRect = new Graphics()
         timeRect.lineStyle({
             width: 3,
@@ -23,7 +22,7 @@ export default class Timer extends Container {
 
         const text = new Text('倒计时间', new TextStyle({
             align: 'center',
-            fontSize: 20,
+            fontSize: 14,
             fill: utils.rgb2hex([122 / 255, 191 / 255, 219 / 255]),
             dropShadow: true,
             dropShadowAlpha: 0.7,
@@ -36,10 +35,10 @@ export default class Timer extends Container {
 
         timeRect.addChild(text)
 
-        let timeSeconds = 10
+        let timeSeconds = 300
+        
         clearInterval(this.timer)
         this.timer = setInterval(() => {
-            console.log('setInterval')
             if (timeSeconds < 1) {
                 clearInterval(this.timer)
             }
@@ -51,7 +50,7 @@ export default class Timer extends Container {
             let timeStr = mm + ':' + ss
             const time = this.time = new Text(timeStr, new TextStyle({
                 align: 'center',
-                fontSize: 24,
+                fontSize: 14,
                 fill: utils.rgb2hex([235 / 255, 174 / 255, 23 / 255]),
                 dropShadow: true,
                 dropShadowAlpha: 0.7,
