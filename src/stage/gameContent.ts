@@ -6,6 +6,8 @@ import Person from "../sprites/person";
 import bubbleFactory from "../textureFactory/bubbleFactory";
 import mapFactory from "../textureFactory/mapFactory";
 import { priateMap } from '../map/pirate'
+import textureFactory from "../textureFactory";
+import Props from "../sprites/props";
 
 export default class GameContent extends Container {
 
@@ -62,7 +64,6 @@ export default class GameContent extends Container {
 
     const bubble = new Bubble(bubbleFactory()[style], x, y, power)
     bubble.zIndex = 1
-
     this.addChild(bubble)
     this.bubbles.push(bubble)
 
@@ -108,7 +109,7 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
+            // nextItem.top = ""
             right++
             break
           }
@@ -248,8 +249,21 @@ export default class GameContent extends Container {
     }
 
     destoryBox.forEach(item => {
+
+      if (!item.block) {
+        return
+      }
       item.top = ""
       item.block?.parent.removeChild(item.block)
+
+      if (item.prop) {
+
+
+        const props = new Props(item.prop)
+        props.x = item.block.x
+        props.y = item.block.y
+        this.addChild(props)
+      }
     })
 
     boomBubbles.forEach(item => {

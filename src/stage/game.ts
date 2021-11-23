@@ -79,7 +79,7 @@ export default class GameStage extends Stage {
       status: 'ALIVE'
     }])
     list.x = 645
-    list.y = 80
+    list.y = 85
     this.addChild(list);
     //   //
     // }

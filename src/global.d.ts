@@ -25,6 +25,7 @@ interface MapBlock {
     floor: string,
     top: string,
     type: boolean,
+    prop?:string
 }
 
 type TBubbleStyle = "RANBOW" |
