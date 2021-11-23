@@ -1,6 +1,8 @@
 export const GRID_WIDTH = 40
 export const GRID_HEIGHT = 40
-export const GRID_WIDTH_SIZE = 35
-export const GRID_HEIGHT_SIZE = 20
-export const STAGE_WIDTH = GRID_WIDTH * GRID_WIDTH_SIZE
-export const STAGE_HEIGHT = GRID_HEIGHT * GRID_HEIGHT_SIZE
+export const GRID_WIDTH_SIZE = 15
+export const GRID_HEIGHT_SIZE = 13
+export const STAGE_WIDTH = 800
+export const STAGE_HEIGHT = 600
+export const GRID_WIDTH_BOX = 15
+export const GRID_HEIGHT_BOX = 13

@@ -18,6 +18,10 @@ export const COMMON_TEXTURE_LIST = [
   "assets/custom_bubble_98.png",
   "assets/custom_bubble_99.png",
   "assets/map_flopy_tile2.png",
+  "assets/map_pirate_object1.png",
+  "assets/map_pirate_object5.png",
+  "assets/map_pirate_tile2.png",
+  "assets/map_pirate_tile6.png",
   "assets/unit_bombwater.png"
 ]
 
@@ -40,6 +44,10 @@ export enum COMMON_TEXTURE {
 'custom_bubble_98.png' = 'assets/custom_bubble_98.png',
 'custom_bubble_99.png' = 'assets/custom_bubble_99.png',
 'map_flopy_tile2.png' = 'assets/map_flopy_tile2.png',
+'map_pirate_object1.png' = 'assets/map_pirate_object1.png',
+'map_pirate_object5.png' = 'assets/map_pirate_object5.png',
+'map_pirate_tile2.png' = 'assets/map_pirate_tile2.png',
+'map_pirate_tile6.png' = 'assets/map_pirate_tile6.png',
 'unit_bombwater.png' = 'assets/unit_bombwater.png'
 }
     

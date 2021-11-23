@@ -1,4 +1,4 @@
-import { Texture } from "pixi.js"
+import { Sprite, Texture } from "pixi.js"
 
 interface TPersonTextureMap {
     down_1: Texture,
@@ -18,6 +18,13 @@ interface TPersonTextureMap {
     right_3: Texture,
     right_4: Texture,
     right_5: Texture,
+}
+
+interface Item {
+    block?: Sprite
+    floor: string,
+    top: string,
+    type: boolean,
 }
 
 type TBubbleStyle = "RANBOW" |
