@@ -60,7 +60,7 @@ export default class GameStage extends Stage {
     // timer
     const timer = new Timer()
 
-    timer.x = 100
+    timer.x = 600
     timer.y = 45
     this.addChild(timer)
 
@@ -74,7 +74,7 @@ export default class GameStage extends Stage {
       icon: bubbleFactory().RED[0],
       status: 'ALIVE'
     }])
-    list.x = 100
+    list.x = 600
     list.y = 100
     this.addChild(list);
     //   //

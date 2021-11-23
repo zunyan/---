@@ -7,6 +7,8 @@ import Person from "../sprites/person";
 import bubbleFactory from "../textureFactory/bubbleFactory";
 import mapFactory from "../textureFactory/mapFactory";
 import { priateMap } from '../map/pirate'
+import textureFactory from "../textureFactory";
+import Props from "../sprites/props";
 
 export default class GameContent extends Container {
 
@@ -66,7 +68,6 @@ export default class GameContent extends Container {
 
     const bubble = new Bubble(bubbleFactory()[style], x, y, power)
     bubble.zIndex = 1
-
     this.addChild(bubble)
     this.bubbles.push(bubble)
 
@@ -108,7 +109,7 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
+            // nextItem.top = ""
             right++
             break
           }
@@ -130,11 +131,11 @@ export default class GameContent extends Container {
       // 往左寻找
       while (1) {
 
-        const newGridX = gridX- left - 1
-        const newGridY = gridY 
+        const newGridX = gridX - left - 1
+        const newGridY = gridY
 
         // 地图出界
-        if (newGridX < 0 ) {
+        if (newGridX < 0) {
           break
         }
 
@@ -151,7 +152,7 @@ export default class GameContent extends Container {
           }
         }
 
-        const bubble = this.bubbles.find(item => item.gridX == newGridX&& item.gridY == newGridY)
+        const bubble = this.bubbles.find(item => item.gridX == newGridX && item.gridY == newGridY)
         if (bubble && !boomBubbles.some(item => item.bubble == bubble)) {
           todoList.push(bubble)
         }
@@ -246,8 +247,21 @@ export default class GameContent extends Container {
     }
 
     destoryBox.forEach(item => {
+
+      if (!item.block) {
+        return
+      }
       item.top = ""
       item.block?.parent.removeChild(item.block)
+
+      if (item.prop) {
+
+
+        const props = new Props(item.prop)
+        props.x = item.block.x
+        props.y = item.block.y
+        this.addChild(props)
+      }
     })
 
     boomBubbles.forEach(item => {
