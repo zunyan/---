@@ -2,6 +2,7 @@ import { AnimatedSprite, Container, Loader, Sprite } from "pixi.js";
 import { GRID_HEIGHT, GRID_WIDTH } from "../constant";
 import { TBubbleStyle, TPersonTextureMap } from "../global";
 import GameStage from "../stage/game";
+import GameContent from "../stage/gameContent";
 import textureFactory from "../textureFactory";
 import bubbleFactory from "../textureFactory/bubbleFactory";
 import Bubble from "./bubble";
@@ -15,10 +16,11 @@ export default class Person extends Container {
   // 
   gridX: number = 0
   gridY: number = 0
-  speed: number = 3
+  speed: number = 5
   sprite: AnimatedSprite;
   textureMap
   booms: any;
+  power: number = 1
 
   // style setting
   bubbleStyle: TBubbleStyle = "RANBOW"
@@ -125,16 +127,15 @@ export default class Person extends Container {
       this.keyEvent.push(e.code)
     } else if (e.code == 'Space') {
 
-      (this.parent as GameStage).onCreateBubble(
+      (this.parent as GameContent).onCreateBubble(
         this.gridX,
         this.gridY,
         this.bubbleStyle,
-        4
+        this.power
       )
 
     }
   }
-
   handleKeyup(e: KeyboardEvent) {
     if ([
       "ArrowLeft",
@@ -174,9 +175,19 @@ export default class Person extends Container {
 
     let gridX = Math.floor(x / GRID_WIDTH)
     let gridY = Math.floor(y / GRID_HEIGHT)
+
+    // let nextGridX = gridX
+    // let nextGridY = gridY
+    // switch (this.moveTarget) {
+    //   case 'Left': nextGridX--; break;
+    //   case 'Right': nextGridX++; break;
+    //   case 'Up': nextGridY--; break;
+    //   case 'Down': nextGridY++; break;
+    // }
+
     if (
       (this.gridX == gridX && this.gridY == gridY) ||
-      (this.parent as GameStage).iCanGo(gridX, gridY)
+      (this.parent as GameContent).iCanGo(gridX, gridY)
 
     ) {
       // 更新grid
@@ -185,25 +196,5 @@ export default class Person extends Container {
       this.x = x
       this.y = y
     }
-
-    const styles = [
-      'RANBOW',
-      'BLUE',
-      'BLACK',
-      'RED',
-      'DARK_RED',
-      'RED_AND_BLUE',
-      'SOAP',
-      'Skulls',
-      'black_flame',
-      'ocean'
-    ];
-
-    (this.parent as GameStage).onCreateBubble(
-      this.gridX,
-      this.gridY,
-      styles[Math.floor(Math.random() * (styles.length ))] as any, //this.bubbleStyle,
-      20
-    )
   }
 }

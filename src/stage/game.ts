@@ -1,6 +1,6 @@
 import { DisplayObject, Graphics, Sprite, utils } from "pixi.js";
 import app from "../app";
-import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_WIDTH_BOX2, GRID_HEIGHT_BOX2, GRID_HEIGHT_BOX3, GRID_WIDTH_BOX3 } from "../constant";
+import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_HEIGHT_BOX, GRID_WIDTH_BOX } from "../constant";
 import { Item, TBubbleStyle } from "../global";
 import Block from "../sprites/block";
 import Bubble from "../sprites/bubble";
@@ -18,26 +18,43 @@ export default class GameStage extends Stage {
 
   person: any;
   bubbles: Bubble[] = [];
-  map: Item[][];
+  map: Item[][] | undefined;
 
   constructor() {
     super()
 
-    // 渲染框架
+    this.background = 0x0a5fb9;
+    
     const box1 = new Graphics()
-    box1.beginFill(utils.rgb2hex([2 / 255, 94 / 255, 161 / 255]));
-    box1.drawRect(0, 0, STAGE_WIDTH, STAGE_HEIGHT)
-
     box1.beginFill(0x000000);
-    box1.drawRect(20, 100, GRID_WIDTH_BOX2, GRID_HEIGHT_BOX2)
+    box1.lineStyle({
+      color: 0x327bb2,
+      width: 2
+    })
+    box1.drawRoundedRect(0, 0, GRID_WIDTH_BOX * GRID_WIDTH + 20, GRID_HEIGHT_BOX * GRID_WIDTH + 20, 8)
 
-    box1.beginFill(utils.rgb2hex([100 / 255, 100 / 255, 96 / 255]));
-    box1.drawRect(28, 105, GRID_WIDTH_BOX3, GRID_HEIGHT_BOX3)
+    box1.beginFill(0x696772);
+    box1.lineStyle({
+      color: 0x44414a,
+      width: 2
+    })
+    box1.drawRoundedRect(5, 5, GRID_WIDTH_BOX * GRID_WIDTH + 10, GRID_HEIGHT_BOX * GRID_WIDTH + 10, 8)
+    box1.endFill()
+
+    box1.lineStyle({
+      color: 0x44414a,
+      width: 2
+    })
+    box1.beginFill(0x000);
+    box1.drawRoundedRect(10, 10, GRID_WIDTH_BOX * GRID_WIDTH, GRID_HEIGHT_BOX * GRID_WIDTH, 8)
+    box1.endFill()
+    box1.x = 8
+    box1.y = 22
     this.addChild(box1)
 
     const content = new GameContent(priateMap)
-    content.x = 28
-    content.y = 105
+    content.x = 18
+    content.y = 32
     this.addChild(content)
 
     // timer
@@ -48,8 +65,8 @@ export default class GameStage extends Stage {
     // playerlist
     const list = new PlayerList()
     this.addChild(list);
-  //   //
-  // }
+    //   //
+    // }
 
   }
 }

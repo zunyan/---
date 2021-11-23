@@ -1,4 +1,4 @@
-import { Texture } from "pixi.js"
+import { Sprite, Texture } from "pixi.js"
 
 interface TPersonTextureMap {
     down_1: Texture,
@@ -21,6 +21,7 @@ interface TPersonTextureMap {
 }
 
 interface Item {
+    block?: Sprite
     floor: string,
     top: string,
     type: boolean,
