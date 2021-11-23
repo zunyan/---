@@ -1,14 +1,8 @@
 import { DisplayObject, Graphics, Sprite, utils } from "pixi.js";
-import app from "../app";
 import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_HEIGHT_BOX, GRID_WIDTH_BOX } from "../constant";
-import { Item, TBubbleStyle } from "../global";
-import Block from "../sprites/block";
 import Bubble from "../sprites/bubble";
-import Person from "../sprites/person";
 import bubbleFactory from "../textureFactory/bubbleFactory";
-import mapFactory from "../textureFactory/mapFactory";
 import Stage from "./stage";
-import * as TWEEN from '@tweenjs/tween.js'
 import PlayerList from "../sprites/playerList";
 import Timer from "../sprites/timer";
 import { priateMap } from '../map/pirate'
@@ -18,7 +12,6 @@ export default class GameStage extends Stage {
 
   person: any;
   bubbles: Bubble[] = [];
-  map: Item[][] | undefined;
 
   constructor() {
     super()

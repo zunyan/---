@@ -1,7 +1,6 @@
 import { Container, DisplayObject, Graphics, Sprite, utils } from "pixi.js";
-import app from "../app";
 import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_HEIGHT_BOX, GRID_WIDTH_BOX } from "../constant";
-import { Item, TBubbleStyle } from "../global";
+import { MapBlock, TBubbleStyle } from "../global";
 import Bubble from "../sprites/bubble";
 import Person from "../sprites/person";
 import bubbleFactory from "../textureFactory/bubbleFactory";
@@ -12,10 +11,10 @@ export default class GameContent extends Container {
 
   person: Person;
   bubbles: Bubble[] = [];
-  map: Item[][];
+  map: MapBlock[][];
   content: Container;
 
-  constructor(map: Item[][]) {
+  constructor(map: MapBlock[][]) {
     super()
 
     const content = this.content = new Container()
@@ -27,8 +26,8 @@ export default class GameContent extends Container {
     content.addChild(mask)
     this.addChild(content)
 
-    map.forEach((item: Item[], index) => {
-      item.forEach((_item: Item, _index) => {
+    map.forEach((item: MapBlock[], index) => {
+      item.forEach((_item: MapBlock, _index) => {
         const floor = new Sprite((mapFactory().map_pirate as any)[_item.floor])
         floor.x = _index * GRID_WIDTH
         floor.y = index * GRID_WIDTH + GRID_WIDTH
@@ -48,10 +47,7 @@ export default class GameContent extends Container {
     this.map = priateMap;
 
     this.person = new Person(0, 0)
-    this.person.interactive = true
-    this.person.on('click', () => {
-      app.back()
-    })
+
     this.addChild(this.person)
 
     document.onkeydown = this.person.handleKeydown.bind(this.person)
@@ -71,7 +67,7 @@ export default class GameContent extends Container {
     this.bubbles.push(bubble)
 
     await new Promise(resolve => setTimeout(resolve, 3500))
-    if(this.bubbles.some(item => bubble == item)){
+    if (this.bubbles.some(item => bubble == item)) {
       this.checkBoomt(bubble)
     }
   }
@@ -79,7 +75,7 @@ export default class GameContent extends Container {
   async checkBoomt(bubble: Bubble) {
 
     const todoList: Bubble[] = [bubble]
-    const destoryBox : Item[] = []
+    const destoryBox: MapBlock[] = []
     const boomBubbles: {
       bubble: Bubble,
       left: number,
@@ -106,9 +102,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[gridY][gridX + right + 1]
         if (nextItem) {
-          if(destoryBox.some(item => item == nextItem)){
+          if (destoryBox.some(item => item == nextItem)) {
             break
-          }else if (nextItem.type) {
+          } else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -133,20 +129,20 @@ export default class GameContent extends Container {
       // 往左寻找
       while (1) {
 
-        const newGridX = gridX- left - 1
-        const newGridY = gridY 
+        const newGridX = gridX - left - 1
+        const newGridY = gridY
 
         // 地图出界
-        if (newGridX < 0 ) {
+        if (newGridX < 0) {
           break
         }
 
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if(destoryBox.some(item => item == nextItem)){
+          if (destoryBox.some(item => item == nextItem)) {
             break
-          }else if (nextItem.type) {
+          } else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -156,7 +152,7 @@ export default class GameContent extends Container {
           }
         }
 
-        const bubble = this.bubbles.find(item => item.gridX == newGridX&& item.gridY == newGridY)
+        const bubble = this.bubbles.find(item => item.gridX == newGridX && item.gridY == newGridY)
         if (bubble && !boomBubbles.some(item => item.bubble == bubble)) {
           todoList.push(bubble)
         }
@@ -182,9 +178,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if(destoryBox.some(item => item == nextItem)){
+          if (destoryBox.some(item => item == nextItem)) {
             break
-          }else if (nextItem.type) {
+          } else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -218,9 +214,9 @@ export default class GameContent extends Container {
         // 障碍物判断
         const nextItem = this.map[newGridY][newGridX]
         if (nextItem) {
-          if(destoryBox.some(item => item == nextItem)){
+          if (destoryBox.some(item => item == nextItem)) {
             break
-          }else if (nextItem.type) {
+          } else if (nextItem.type) {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
@@ -263,7 +259,7 @@ export default class GameContent extends Container {
     })
   }
 
-  iCanGo(gridX: number, gridY: number): boolean {
+  iCanGo(gridX: number, gridY: number, x: number, y: number): boolean {
     return true &&
       gridX >= 0 && GRID_WIDTH_SIZE > gridX && // 不超过屏幕尺寸
       gridY >= 0 && GRID_HEIGHT_SIZE > gridY && // 不超过屏幕尺寸
