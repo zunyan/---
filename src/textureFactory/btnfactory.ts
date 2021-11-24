@@ -2,7 +2,10 @@ import { Loader, Rectangle, Texture } from "pixi.js";
 import { COMMON_TEXTURE } from "../COMMON";
 
 interface TBtnTextures {
-   blueBtn: Texture
+   blueBtn: Texture,
+   btn_pre_page: Texture,
+   btn_next_page: Texture,
+   btn_create_room: Texture,
 }
 
 let cache: TBtnTextures
@@ -10,6 +13,9 @@ export default function btnFactory(): TBtnTextures {
     const blueBtn = Loader.shared.resources[COMMON_TEXTURE["btn_blue.png"]].texture
     
     return cache = cache || {
-       blueBtn: blueBtn
+       blueBtn: blueBtn,
+       btn_pre_page: Loader.shared.resources[COMMON_TEXTURE["btn_pre_page.png"]].texture,
+       btn_next_page: Loader.shared.resources[COMMON_TEXTURE["btn_next_page.png"]].texture,
+       btn_create_room: Loader.shared.resources[COMMON_TEXTURE["btn_create_room.png"]].texture,
     }
 }

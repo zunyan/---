@@ -25,7 +25,7 @@ interface MapBlock {
     floor: string,
     top: string,
     type: boolean,
-    prop?:string
+    prop?: string
 }
 
 type TBubbleStyle = "RANBOW" |
@@ -42,3 +42,28 @@ type TBubbleStyle = "RANBOW" |
 
 
 type TMaptheme = "小区"
+
+export enum TRoomStatus {
+    WAITING = 0,
+    IN_GAME = 1,
+}
+
+export enum TPlayerStatus {
+    PENDING = 0,
+    READY = 1,
+}
+
+interface TPlayer {
+    name: string,
+    status: TPlayerStatus,
+    roleIndex: number,
+    isMaster: boolean
+}
+
+interface TRoom {
+    id: string,
+    name: string,
+    players: TPlayer[],
+    totalPlayer: number,
+    status: TRoomStatus
+}

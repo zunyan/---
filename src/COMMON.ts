@@ -3,6 +3,10 @@ export const COMMON_TEXTURE_LIST = [
   "assets/bazzi.png",
   "assets/bg.jpg",
   "assets/btn_blue.png",
+  "assets/btn_create_room.png",
+  "assets/btn_next_page.png",
+  "assets/btn_pre_page.png",
+  "assets/btn_room_start.png",
   "assets/custom_bubble_100.png",
   "assets/custom_bubble_101.png",
   "assets/custom_bubble_102.png",
@@ -46,6 +50,10 @@ export const COMMON_TEXTURE_LIST = [
   "assets/map_pirate_object5.png",
   "assets/map_pirate_tile2.png",
   "assets/map_pirate_tile6.png",
+  "assets/room_card_bg.png",
+  "assets/room_card_default_img.png",
+  "assets/room_card_status_in_game.png",
+  "assets/room_card_status_waiting.png",
   "assets/unit_bombwater.png"
 ]
 
@@ -53,6 +61,10 @@ export enum COMMON_TEXTURE {
   'bazzi.png' = 'assets/bazzi.png',
 'bg.jpg' = 'assets/bg.jpg',
 'btn_blue.png' = 'assets/btn_blue.png',
+'btn_create_room.png' = 'assets/btn_create_room.png',
+'btn_next_page.png' = 'assets/btn_next_page.png',
+'btn_pre_page.png' = 'assets/btn_pre_page.png',
+'btn_room_start.png' = 'assets/btn_room_start.png',
 'custom_bubble_100.png' = 'assets/custom_bubble_100.png',
 'custom_bubble_101.png' = 'assets/custom_bubble_101.png',
 'custom_bubble_102.png' = 'assets/custom_bubble_102.png',
@@ -96,6 +108,10 @@ export enum COMMON_TEXTURE {
 'map_pirate_object5.png' = 'assets/map_pirate_object5.png',
 'map_pirate_tile2.png' = 'assets/map_pirate_tile2.png',
 'map_pirate_tile6.png' = 'assets/map_pirate_tile6.png',
+'room_card_bg.png' = 'assets/room_card_bg.png',
+'room_card_default_img.png' = 'assets/room_card_default_img.png',
+'room_card_status_in_game.png' = 'assets/room_card_status_in_game.png',
+'room_card_status_waiting.png' = 'assets/room_card_status_waiting.png',
 'unit_bombwater.png' = 'assets/unit_bombwater.png'
 }
     

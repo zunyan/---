@@ -1,36 +1,30 @@
 import Stage from "./stage";
 import socket from '../socket'
-import { GRID_HEIGHT_BOX, GRID_WIDTH, GRID_WIDTH_BOX, HALL_SOCKET_URL, STAGE_WIDTH } from "../constant";
+import { HALL_SOCKET_URL, STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
 import store from "../store";
-import { Graphics, TextStyle, utils, Text, Container, Loader } from "pixi.js";
+import { Graphics, Container, Loader, Sprite } from "pixi.js";
 import app from "../app";
 import RoomStage from "./room";
 import UIButton from "../sprites/UIButton";
 import { COMMON_TEXTURE } from "../COMMON";
-// (window as any).io = socket;
-
-interface Player {
-  name: string
-}
-
-interface Room {
-  id: string,
-  name: string,
-  players: Player[],
-  totalPlayer: number,
-  status: string
-}
+import btnFactory from "../textureFactory/btnfactory";
+import RoomCard from "../sprites/roomCard";
+import { TRoom, TRoomStatus } from "../global";
+import MessageBox from "../sprites/messageBox";
 
 export default class HallStage extends Stage {
   io: any;
-  roomList: Room[] = []
+  roomList: TRoom[] = []
   timer: number | undefined;
   roomListBox: Container;
+  pageNum: number = 0
+  messageBox: MessageBox;
 
   constructor() {
     super()
     this.background = 0x268ed8;
     this.backgroundImage = Loader.shared.resources[COMMON_TEXTURE["hall.png"]].texture
+
     const createRoomBtn = new UIButton("创建房间", 120, 60)
     createRoomBtn.x = STAGE_WIDTH - createRoomBtn.width - 25
     createRoomBtn.y = 22
@@ -38,42 +32,56 @@ export default class HallStage extends Stage {
     this.addChild(createRoomBtn)
 
     const box1 = new Graphics()
-    box1.beginFill(0x000000);
     box1.lineStyle({
-      color: 0x327bb2,
-      width: 2
+      color: 0x000,
+      alpha: .25,
+      width: 1
     })
-    box1.drawRoundedRect(0, 0, 720 + 20, 390 + 20, 8)
-
-    box1.beginFill(0x696772);
-    box1.lineStyle({
-      color: 0x44414a,
-      width: 2
-    })
-    box1.drawRoundedRect(5, 5, 720 + 10, 390 + 10, 8)
+    box1.beginFill(0x000000, 0.2);
+    box1.drawRoundedRect(0, 0, 760, 340, 4)
     box1.endFill()
-
     box1.lineStyle({
-      color: 0x44414a,
-      width: 2
+      color: 0x000,
+      alpha: .30,
+      width: 1
     })
-    box1.beginFill(0x0a5fb9);
-    box1.drawRoundedRect(10, 10, 720, 390, 8)
+    box1.beginFill(0x000000, 0.3);
+    box1.drawRoundedRect(15, 15, 730, 275, 4)
     box1.endFill()
-    box1.x = 30
-    box1.y = 100
+    box1.x = STAGE_WIDTH / 2 - box1.width / 2
+    box1.y = 95
     this.addChild(box1)
+
+    const btnbar = new Container()
+    const prePageBtn = new Sprite(btnFactory().btn_pre_page)
+    prePageBtn.interactive = true
+    prePageBtn.on("click", this.prePage.bind(this))
+    btnbar.addChild(prePageBtn)
+
+    const nextPageBtn = new Sprite(btnFactory().btn_next_page)
+    nextPageBtn.interactive = true
+    nextPageBtn.on("click", this.nextPage.bind(this))
+    nextPageBtn.x = prePageBtn.width + 10
+    btnbar.addChild(nextPageBtn)
+    btnbar.x = STAGE_WIDTH / 2 - btnbar.width / 2
+    btnbar.y = 400
+    this.addChild(btnbar)
 
     this.roomListBox = new Container()
     this.roomListBox.x = 45
     this.roomListBox.y = 115
     this.addChild(this.roomListBox)
+
+    this.messageBox = new MessageBox(760, 110)
+    this.messageBox.x = STAGE_WIDTH / 2 - this.messageBox.width / 2
+    this.messageBox.y = STAGE_HEIGHT - this.messageBox.height - 40
+    this.addChild(this.messageBox)
   }
 
   handleOnCreateRoom() {
     const name = prompt('请输入房间名称')
     if (name) {
-      this.io.emit('createRoom', name, (room: Room) => {
+      this.io.emit('createRoom', name, (room: TRoom) => {
         console.info('创建成功', room)
         store.roomId = room.id
         app.push(RoomStage)
@@ -82,7 +90,7 @@ export default class HallStage extends Stage {
   }
 
   queryRoom() {
-    this.io.emit('getRoomList', (roomList: Room[]) => {
+    this.io.emit('getRoomList', (roomList: TRoom[]) => {
       this.roomList = roomList
       this.rerenderRoomList()
 
@@ -90,8 +98,24 @@ export default class HallStage extends Stage {
         this.queryRoom()
       }, 2000)
     })
-
   }
+
+  prePage() {
+    if (this.pageNum == 0) {
+      return
+    }
+    this.pageNum--
+    this.rerenderRoomList()
+  }
+
+  nextPage() {
+    if (Math.floor(this.roomList.length / 6) == this.pageNum) {
+      return
+    }
+    this.pageNum++
+    this.rerenderRoomList()
+  }
+
 
   onEnter() {
     this.io = socket(HALL_SOCKET_URL, {
@@ -101,9 +125,10 @@ export default class HallStage extends Stage {
       transports: ['websocket'],
       forceNew: true
     })
-    
-    this.io.on('message', (msg: string)=>{
+
+    this.io.on('message', (msg: string) => {
       console.info("message=>", msg)
+      this.messageBox.push(msg)
     })
 
     this.io.on("connect", () => {
@@ -120,33 +145,22 @@ export default class HallStage extends Stage {
     return Stage.prototype.onLeave.call(this)
   }
 
-  rerenderRoomList() {
-    this.roomListBox.children.forEach(item => {
-      this.roomListBox.removeChild(item)
-    })
+  async rerenderRoomList() {
+    this.roomListBox.removeChildren()
 
-    this.roomList.forEach((item, index) => {
-      const g = new Graphics()
-      g.beginFill(0x0099ff)
-      g.drawRoundedRect(0, 0, 230, 120, 10)
-      g.endFill()
+    this.pageNum = Math.min(this.pageNum, Math.floor(this.roomList.length / 6))
 
-      const text = new Text(item.name, new TextStyle({
-        align: 'center',
-        fontSize: 14,
-        fill: utils.rgb2hex([122 / 255, 191 / 255, 219 / 255]),
-      }))
+    this.roomList.slice(this.pageNum * 6, (this.pageNum + 1) * 6).forEach((item, index) => {
 
-      text.x = 10
-      g.addChild(text)
-      g.interactive = true
-      g.x = index % 3 * (g.width + 8)
-      g.y = Math.floor(index / 3) * (g.height + 8)
-      g.on('click', () => {
+      const card = new RoomCard(item.id, item.name, item.status)
+      card.x = index % 3 * (card.width + 8)
+      card.y = Math.floor(index / 3) * (card.height + 8)
+      card.on('click', () => {
         store.roomId = item.id
         app.push(RoomStage)
       })
-      this.roomListBox.addChild(g)
+
+      this.roomListBox.addChild(card)
 
     })
   }
