@@ -16,11 +16,16 @@ export default class Person extends Container {
   // 
   gridX: number = 0
   gridY: number = 0
-  speed: number = 5
   sprite: AnimatedSprite;
   textureMap
   booms: any;
-  power: number = 10
+
+  speed: number = 5
+  speedLimit: number = 10
+  power: number = 1
+  powerLimit: number = 10
+  popCount: number = 2
+  popCountLimit: number = 1
 
   // style setting
   bubbleStyle: TBubbleStyle = "RANBOW"
@@ -61,7 +66,6 @@ export default class Person extends Container {
 
   set moveTarget(val: TPersonMoveTarget) {
     this._moveTarget = val
-    this.sprite.scale.set(1, 1);
     switch (this.moveTarget) {
       case "Left":
         this.sprite.textures = [
@@ -81,6 +85,7 @@ export default class Person extends Container {
           this.textureMap.right_4,
           this.textureMap.right_5,
         ]
+        this.sprite.scale.set(1, 1);
         break;
       case "Up":
         this.sprite.textures = [
@@ -90,6 +95,7 @@ export default class Person extends Container {
           this.textureMap.up_4,
           this.textureMap.up_5,
         ]
+        this.sprite.scale.set(1, 1);
         break;
       case "Down":
         this.sprite.textures = [
@@ -99,6 +105,7 @@ export default class Person extends Container {
           this.textureMap.down_4,
           this.textureMap.down_5,
         ]
+        this.sprite.scale.set(1, 1);
         break;
     }
   }
@@ -176,18 +183,9 @@ export default class Person extends Container {
     let gridX = Math.floor(x / GRID_WIDTH)
     let gridY = Math.floor(y / GRID_HEIGHT)
 
-    // let nextGridX = gridX
-    // let nextGridY = gridY
-    // switch (this.moveTarget) {
-    //   case 'Left': nextGridX--; break;
-    //   case 'Right': nextGridX++; break;
-    //   case 'Up': nextGridY--; break;
-    //   case 'Down': nextGridY++; break;
-    // }
-
     if (
       (this.gridX == gridX && this.gridY == gridY) ||
-      (this.parent as GameContent).iCanGo(gridX, gridY)
+      (this.parent as GameContent).iCanGo(gridX, gridY, x, y)
 
     ) {
       // 更新grid

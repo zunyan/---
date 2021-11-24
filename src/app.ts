@@ -13,7 +13,8 @@ export default new class App extends Application {
         super({
             width: STAGE_WIDTH,
             height: STAGE_HEIGHT,
-            backgroundColor: 0xffffff
+            backgroundColor: 0xffffff,
+            antialias: true
         })
 
         this.ticker.add(() => {
@@ -32,7 +33,6 @@ export default new class App extends Application {
             }
 
             fn(this.stage)
-
 
             // Setup the animation loop.
             TWEEN.update(performance.now())

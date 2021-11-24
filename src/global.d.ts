@@ -20,7 +20,7 @@ interface TPersonTextureMap {
     right_5: Texture,
 }
 
-interface Item {
+interface MapBlock {
     block?: Sprite
     floor: string,
     top: string,

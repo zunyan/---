@@ -7,10 +7,8 @@ export default class Stage extends Container {
 
   constructor() {
     super()
-    this.onEnter()
     this.bg = new Graphics()
     this.addChild(this.bg)
-
   }
 
   get width() {

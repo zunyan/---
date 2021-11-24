@@ -1,9 +1,8 @@
-import { Item } from "../global";
+import { MapBlock } from "../global";
 
 const fn = (floor: string, top: string, type: boolean, prop?: string) => ({ floor, top, type, prop })
 
-
-export const priateMap: Item[][] = [
+export const priateMap: MapBlock[][] = [
     [
         fn('floor2', '', false),
         fn('floor4', '', false),
