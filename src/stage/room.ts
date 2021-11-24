@@ -2,11 +2,13 @@ import Stage from "./stage";
 import socket from '../socket'
 import { HALL_SOCKET_URL, ROOM_SOCKET_URL, STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
 import store from "../store";
-import { Graphics, TextStyle, utils, Loader } from "pixi.js";
+import { Graphics, TextStyle, utils, Loader, Text } from "pixi.js";
 import UIButton from "../sprites/UIButton";
 import app from "../app";
 import MessageBox from "../sprites/messageBox";
 import { COMMON_TEXTURE } from "../COMMON";
+import { TPlayer, TRoom } from "../global";
+import PlayerCard from "../sprites/playerCard";
 
 
 export default class RoomStage extends Stage {
@@ -27,7 +29,7 @@ export default class RoomStage extends Stage {
 
 
     const g = new Graphics()
-    const fastDrawRoundedRect = (x: number, y: number, width: number, height: number, color: number, fill: number, round: number)=>{
+    const fastDrawRoundedRect = (x: number, y: number, width: number, height: number, color: number, fill: number, round: number) => {
       g.lineStyle({ color: color, width: 1 })
       g.beginFill(fill)
       g.drawRoundedRect(x, y, width, height, round);
@@ -77,8 +79,38 @@ export default class RoomStage extends Stage {
     return Stage.prototype.onEnter.call(this)
   }
 
-  sync() {
+  sync(room: TRoom) {
+    this.renderRoomName(room)
+    this.renderPlayCard(room)
+  }
 
+  renderRoomName(room: TRoom) {
+    const name = new Text(room.name, new TextStyle({
+      align: 'center',
+      fontSize: 12,
+      fill: '#fff'
+    }))
+    name.x = 30
+    name.y = 63
+    name.zIndex = 10
+    this.addChild(name)
+  }
+
+  renderPlayCard(room: TRoom) {
+
+    for (let i = 0; i < room.totalPlayer; i++) {
+      const player = new PlayerCard(true, room.players[i])
+      player.x = 25 + i % 4 * (player.width + 4)
+      player.y = Math.floor(i / 4) * player.height + 92
+      this.addChild(player)
+    }
+
+    for (let i = room.totalPlayer; i < 8; i++) {
+      const player = new PlayerCard(false)
+      player.x = 25 + i % 4 * (player.width + 4)
+      player.y = Math.floor(i / 4) * player.height + 92
+      this.addChild(player)
+    }
   }
 
   onLeave() {

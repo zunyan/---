@@ -40,7 +40,6 @@ type TBubbleStyle = "RANBOW" |
     "ocean"
 
 
-
 type TMaptheme = "小区"
 
 export enum TRoomStatus {
