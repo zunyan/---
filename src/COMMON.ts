@@ -61,7 +61,11 @@ export const COMMON_TEXTURE_LIST = [
   "assets/room_card_status_waiting.png",
   "assets/room_player_card.png",
   "assets/room_player_card_none.png",
-  "assets/unit_bombwater.png"
+  "assets/unit_bazzi.png",
+  "assets/unit_bombwater.png",
+  "assets/unit_cappi.png",
+  "assets/unit_dao.png",
+  "assets/unit_marid.png"
 ]
 
 export enum COMMON_TEXTURE {
@@ -126,6 +130,10 @@ export enum COMMON_TEXTURE {
 'room_card_status_waiting' = 'assets/room_card_status_waiting.png',
 'room_player_card' = 'assets/room_player_card.png',
 'room_player_card_none' = 'assets/room_player_card_none.png',
-'unit_bombwater' = 'assets/unit_bombwater.png'
+'unit_bazzi' = 'assets/unit_bazzi.png',
+'unit_bombwater' = 'assets/unit_bombwater.png',
+'unit_cappi' = 'assets/unit_cappi.png',
+'unit_dao' = 'assets/unit_dao.png',
+'unit_marid' = 'assets/unit_marid.png'
 }
     
