@@ -23,7 +23,7 @@ export default class HallStage extends Stage {
   constructor() {
     super()
     this.background = 0x268ed8;
-    this.backgroundImage = Loader.shared.resources[COMMON_TEXTURE["hall.png"]].texture
+    this.backgroundImage = Loader.shared.resources[COMMON_TEXTURE.hall].texture
 
     const createRoomBtn = new UIButton("创建房间", 120, 60)
     createRoomBtn.x = STAGE_WIDTH - createRoomBtn.width - 25

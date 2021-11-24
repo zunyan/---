@@ -10,7 +10,7 @@ function fn() {
   console.info(fileList)
 
   const enumList = fileList.map(item => {
-    const key = item.replace('assets/', '')
+    const key = item.replace('assets/', '').replace(/\.(jpg|png)$/, "")
     return `'${key}' = '${item}'`
   }).join(',\n')
   fs.writeFileSync('src/COMMON.ts', `

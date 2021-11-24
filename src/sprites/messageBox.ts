@@ -3,9 +3,10 @@ import dayjs, { Dayjs } from "dayjs";
 export default class MessageBox extends Graphics {
   texts: Text[] = []
   boxHeight: number;
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, hex: number = 0x000, alpha: number = 0.2) {
     super()
-    this.beginFill(0x000, 0.2)
+
+    this.beginFill(hex, alpha)
     this.drawRoundedRect(0, 0, width, height, 4)
     this.endFill()
     this.boxHeight = height;
