@@ -3,6 +3,7 @@ import App from "./app"
 import { COMMON_TEXTURE_LIST } from "./COMMON"
 import { STAGE_HEIGHT, STAGE_WIDTH } from "./constant"
 import GameStage from "./stage/game"
+import HallStage from "./stage/hall"
 import HomeStage from "./stage/home"
 
 document.body.appendChild(App.view)
@@ -17,7 +18,6 @@ document.body.style.height = "100%"
 document.body.style.display = "flex"
 document.body.style.justifyContent = "center"
 document.documentElement.style.height = "100%"
-
 
 // LOADER
 COMMON_TEXTURE_LIST.forEach(<any>Loader.shared.add.bind(Loader.shared))

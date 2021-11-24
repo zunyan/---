@@ -7,6 +7,7 @@ import GameStage from "./game";
 import Stage from "./stage";
 import qs from 'qs'
 import store from "../store";
+import HallStage from "./hall";
 
 export default class HomeStage extends Stage {
   constructor() {
@@ -20,9 +21,11 @@ export default class HomeStage extends Stage {
     bg.y = this.height / 2
     this.addChild(bg)
 
+
     const startButton = new UIButton(
       "开始游戏",
-      btnFactory().blueBtn
+      120,
+      60
     )
     startButton.on('click', () => {
       if (!store.name) {
@@ -40,10 +43,16 @@ export default class HomeStage extends Stage {
         )
         store.name = name
       }
-      app.push(GameStage)
+      app.push(HallStage)
     })
-    startButton.x = this.width / 2
-    startButton.y = this.height - 100
+    startButton.x = this.width / 2 - startButton.width / 2
+    startButton.y = this.height - 100 - startButton.height / 2
     this.addChild(startButton)
+
+    setTimeout(()=>{
+      if (store.name) {
+        app.push(HallStage)
+      }
+    }, 100)
   }
 }

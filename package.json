@@ -12,9 +12,11 @@
     "gulp": "^4.0.2",
     "pixi-tween": "^0.2.0",
     "pixi.js": "^6.2.0",
+    "qs": "^6.10.1",
     "vue": "^3.2.16"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.7",
     "@vitejs/plugin-vue": "^1.9.3",
     "typescript": "^4.4.3",
     "vite": "^2.6.4",
