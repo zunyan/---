@@ -109,7 +109,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            // nextItem.top = ""
             right++
             break
           }
@@ -147,7 +146,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             left++
             break
           }
@@ -185,7 +183,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             top--
             break
           }
@@ -221,7 +218,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             bottom++
             break
           }
