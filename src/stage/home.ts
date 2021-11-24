@@ -13,7 +13,7 @@ export default class HomeStage extends Stage {
   constructor() {
     super()
 
-    const bg = new Sprite(Loader.shared.resources[COMMON_TEXTURE["bg.jpg"]].texture)
+    const bg = new Sprite(Loader.shared.resources[COMMON_TEXTURE.bg].texture)
     bg.anchor.set(.5, .5)
     bg.scale.x = .7
     bg.scale.y = .7

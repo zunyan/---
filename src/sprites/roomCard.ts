@@ -6,7 +6,7 @@ export default class RoomCard extends Sprite {
     statusSprite: Sprite | undefined;
     roomId: string;
     constructor(roomId: string, title: string, status: TRoomStatus) {
-        super(Loader.shared.resources[COMMON_TEXTURE["room_card_bg.png"]].texture)
+        super(Loader.shared.resources[COMMON_TEXTURE.room_card_bg].texture)
 
         this.roomId = roomId
         const g = new Graphics()
@@ -35,7 +35,7 @@ export default class RoomCard extends Sprite {
         text.y = 4
         g.addChild(text)
 
-        const img = new Sprite(Loader.shared.resources[COMMON_TEXTURE["room_card_default_img.png"]].texture)
+        const img = new Sprite(Loader.shared.resources[COMMON_TEXTURE.room_card_default_img].texture)
         img.x = 10
         img.y = 15
         this.addChild(img)
@@ -48,8 +48,8 @@ export default class RoomCard extends Sprite {
 
     set roomStatus(status: TRoomStatus){
         const texture = {
-            [TRoomStatus.IN_GAME]: Loader.shared.resources[COMMON_TEXTURE["room_card_status_in_game.png"]].texture,
-            [TRoomStatus.WAITING]: Loader.shared.resources[COMMON_TEXTURE["room_card_status_waiting.png"]].texture,
+            [TRoomStatus.IN_GAME]: Loader.shared.resources[COMMON_TEXTURE.room_card_status_in_game].texture,
+            [TRoomStatus.WAITING]: Loader.shared.resources[COMMON_TEXTURE.room_card_status_waiting].texture,
         }[status]
         if(this.statusSprite){
             this.statusSprite.texture = <any>texture

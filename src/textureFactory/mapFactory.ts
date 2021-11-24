@@ -5,12 +5,12 @@ export default function mapFactory() {
     const texture = Loader.shared.resources['assets/map_flopy_tile2.png'].texture
 
 
-    const map_pirate = Loader.shared.resources[COMMON_TEXTURE['map_pirate_tile2.png']].texture
-    const map_pirate_items = Loader.shared.resources[COMMON_TEXTURE['map_pirate_tile6.png']].texture
-    const map_pirate_object1 = Loader.shared.resources[COMMON_TEXTURE['map_pirate_object1.png']].texture
-    const item_61 = Loader.shared.resources[COMMON_TEXTURE['item_61.png']].texture
-    const item_62 = Loader.shared.resources[COMMON_TEXTURE['item_62.png']].texture
-    const item_63 = Loader.shared.resources[COMMON_TEXTURE['item_63.png']].texture
+    const map_pirate = Loader.shared.resources[COMMON_TEXTURE.map_pirate_tile2].texture
+    const map_pirate_items = Loader.shared.resources[COMMON_TEXTURE.map_pirate_tile6].texture
+    const map_pirate_object1 = Loader.shared.resources[COMMON_TEXTURE.map_pirate_object1].texture
+    const item_61 = Loader.shared.resources[COMMON_TEXTURE.item_61].texture
+    const item_62 = Loader.shared.resources[COMMON_TEXTURE.item_62].texture
+    const item_63 = Loader.shared.resources[COMMON_TEXTURE.item_63].texture
 
     const fix = (texture: any, x: number = 0, y: number = 0, w?: number, h?: number) => new Texture(
         texture,

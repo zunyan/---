@@ -10,12 +10,12 @@ interface TBtnTextures {
 
 let cache: TBtnTextures
 export default function btnFactory(): TBtnTextures {
-    const blueBtn = Loader.shared.resources[COMMON_TEXTURE["btn_blue.png"]].texture
+    const blueBtn = Loader.shared.resources[COMMON_TEXTURE.btn_blue].texture
     
     return cache = cache || {
        blueBtn: blueBtn,
-       btn_pre_page: Loader.shared.resources[COMMON_TEXTURE["btn_pre_page.png"]].texture,
-       btn_next_page: Loader.shared.resources[COMMON_TEXTURE["btn_next_page.png"]].texture,
-       btn_create_room: Loader.shared.resources[COMMON_TEXTURE["btn_create_room.png"]].texture,
+       btn_pre_page: Loader.shared.resources[COMMON_TEXTURE.btn_pre_page].texture,
+       btn_next_page: Loader.shared.resources[COMMON_TEXTURE.btn_next_page].texture,
+       btn_create_room: Loader.shared.resources[COMMON_TEXTURE.btn_create_room].texture,
     }
 }

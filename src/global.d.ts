@@ -1,4 +1,5 @@
 import { Sprite, Texture } from "pixi.js"
+import { TRoleEnum } from "./textureFactory/roleFactory"
 
 interface TPersonTextureMap {
     down_1: Texture,
@@ -55,7 +56,7 @@ export enum TPlayerStatus {
 interface TPlayer {
     name: string,
     status: TPlayerStatus,
-    roleIndex: number,
+    role: TRoleEnum,
     isMaster: boolean
 }
 

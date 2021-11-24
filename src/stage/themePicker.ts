@@ -1,7 +1,6 @@
 import { Container } from "pixi.js";
 import { TMaptheme } from "../global";
 
-
 export default class ThemePicker extends Container {
     constructor(width: number, height: number) {
         super()

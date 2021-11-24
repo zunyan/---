@@ -5,7 +5,7 @@ type TLoadingTextures = Texture[]
 
 let cache: TLoadingTextures
 export default function loadingFactory(): TLoadingTextures {
-    const basegTexture = Loader.shared.resources[COMMON_TEXTURE["loading.png"]].texture
+    const basegTexture = Loader.shared.resources[COMMON_TEXTURE.loading].texture
 
     return cache = cache || [
         new Texture(<any>basegTexture, new Rectangle(0, 0, 100, 100)),
