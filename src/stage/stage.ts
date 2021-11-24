@@ -1,14 +1,17 @@
-import { Container, DisplayObject, Graphics } from "pixi.js";
+import { Container, DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export default class Stage extends Container {
   bg: Graphics;
+  bgImg: Sprite;
 
   constructor() {
     super()
     this.bg = new Graphics()
+    this.bgImg = new Sprite()
     this.addChild(this.bg)
+    this.addChild(this.bgImg)
   }
 
   get width() {
@@ -23,6 +26,12 @@ export default class Stage extends Container {
     this.bg.beginFill(color)
     this.bg.drawRect(0, 0, this.width, this.height)
     this.bg.endFill()
+  }
+
+  set backgroundImage(texture: Texture | undefined){
+    if(texture){
+      this.bgImg.texture = texture
+    }
   }
 
   onEnter() {

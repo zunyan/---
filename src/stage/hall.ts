@@ -2,10 +2,11 @@ import Stage from "./stage";
 import socket from '../socket'
 import { GRID_HEIGHT_BOX, GRID_WIDTH, GRID_WIDTH_BOX, HALL_SOCKET_URL, STAGE_WIDTH } from "../constant";
 import store from "../store";
-import { Graphics, TextStyle, utils, Text, Container } from "pixi.js";
+import { Graphics, TextStyle, utils, Text, Container, Loader } from "pixi.js";
 import app from "../app";
 import RoomStage from "./room";
 import UIButton from "../sprites/UIButton";
+import { COMMON_TEXTURE } from "../COMMON";
 // (window as any).io = socket;
 
 interface Player {
@@ -29,6 +30,7 @@ export default class HallStage extends Stage {
   constructor() {
     super()
     this.background = 0x268ed8;
+    this.backgroundImage = Loader.shared.resources[COMMON_TEXTURE["hall.png"]].texture
     const createRoomBtn = new UIButton("创建房间", 120, 60)
     createRoomBtn.x = STAGE_WIDTH - createRoomBtn.width - 25
     createRoomBtn.y = 22
