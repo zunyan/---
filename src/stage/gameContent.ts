@@ -28,7 +28,6 @@ export default class GameContent extends Container {
     content.mask = mask
     content.addChild(mask)
     this.addChild(content)
-
     map.forEach((item: Item[], index) => {
       item.forEach((_item: Item, _index) => {
         const floor = new Sprite((mapFactory().map_pirate as any)[_item.floor])
@@ -113,7 +112,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            // nextItem.top = ""
             right++
             break
           }
@@ -151,7 +149,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             left++
             break
           }
@@ -189,7 +186,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             top--
             break
           }
@@ -225,7 +221,6 @@ export default class GameContent extends Container {
             break
           } else if (nextItem.top) {
             destoryBox.push(nextItem)
-            nextItem.top = ""
             bottom++
             break
           }

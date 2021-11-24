@@ -31,7 +31,10 @@ export default class Bubble extends Container {
 
   }
 
-  async boom(left: number, right: number, top: number, down: number) {
+  boom(left: number, right: number, top: number, down: number) {
+    if(!this.parent){
+      return 
+    }
     this.srpite.textures = [
       bubbleFactory().boom_ani_1,
       bubbleFactory().boom_ani_2,
@@ -48,7 +51,7 @@ export default class Bubble extends Container {
     this.boomUp(top)
 
     setTimeout(() => {
-      this.parent.removeChild(this)
+      this.parent && this.parent.removeChild(this)
     }, 300)
 
   }
@@ -74,8 +77,6 @@ export default class Bubble extends Container {
       left.animationSpeed = .3
       left.loop = false
       left.play()
-      left.play()
-
       this.addChild(left)
       await new Promise(resolve => setTimeout(resolve, 10))
     }
