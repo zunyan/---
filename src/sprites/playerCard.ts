@@ -3,10 +3,12 @@ import { Sprite } from "@pixi/sprite";
 import { TextStyle, utils, Text } from "pixi.js";
 import { TPlayer, TPlayerStatus } from "../global.d";
 import bazziFactoy from "../textureFactory/bazziFactoy";
+import { TRoleEnum } from "../textureFactory/roleFactory";
 
 import roomFactory from "../textureFactory/roomFactory";
 
 export default class PlayerCard extends Container {
+    person: Sprite | undefined;
     constructor(isPlay: boolean, player?: TPlayer) {
         super();
         const playerCard = new Sprite(isPlay ? roomFactory().playerCard : roomFactory().playerCardNone);
@@ -30,15 +32,17 @@ export default class PlayerCard extends Container {
             name.x = (playerCard.width - name.width) / 2
             name.y = 106
 
-            console.log(5555555,player.role)
-            const person = new Sprite((roomFactory() as any)[player.role])
+            const person = this.person = new Sprite((roomFactory() as any)[player.role])
             person.x = (playerCard.width - person.width) / 2
-            person.y = 20
+            person.y = 30
+
+            const shadow =  new Sprite(bazziFactoy().shadow)
+            shadow.x = playerCard.width / 2 - shadow.width / 2
+            shadow.y = 75
+            this.addChild(shadow)
             this.addChild(person)
             this.addChild(text)
             this.addChild(name)
         }
-
-
     }
 }

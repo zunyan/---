@@ -76,9 +76,7 @@ export default class RoomStage extends Stage {
     roleSelector.x = 488
     roleSelector.y= 250
     roleSelector.onSelected((v: TRoleEnum)=>{
-        this.io.emit('choosePlayer',v,(a:any)=>{
-          console.log(5555,a)
-        })
+        this.io.emit('choosePlayer',v, ()=>{})  
     })
     this.addChild(roleSelector)
   }
@@ -101,11 +99,14 @@ export default class RoomStage extends Stage {
     this.io.on('message', (msg: string) => {
       this.messageBox.push(msg)
     })
+
+    this.io.on('disconnect', ()=>{
+      app.back()
+    })
     return Stage.prototype.onEnter.call(this)
   }
 
   sync(room: TRoom) {
-    console.log(3333,room)
     this.renderRoomName(room)
     this.renderPlayCard(room)
   }
@@ -123,16 +124,8 @@ export default class RoomStage extends Stage {
   }
 
   renderPlayCard(room: TRoom) {
-
-    for (let i = 0; i < room.totalPlayer; i++) {
-      const player = new PlayerCard(true, room.players[i])
-      player.x = 25 + i % 4 * (player.width + 4)
-      player.y = Math.floor(i / 4) * player.height + 92
-      this.addChild(player)
-    }
-
-    for (let i = room.totalPlayer; i < 8; i++) {
-      const player = new PlayerCard(false)
+    for (let i = 0; i < 8; i++) {
+      const player = new PlayerCard(i < room.totalPlayer, room.players[i])
       player.x = 25 + i % 4 * (player.width + 4)
       player.y = Math.floor(i / 4) * player.height + 92
       this.addChild(player)

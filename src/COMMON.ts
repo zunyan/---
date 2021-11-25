@@ -65,6 +65,7 @@ export const COMMON_TEXTURE_LIST = [
   "assets/unit_bombwater.png",
   "assets/unit_cappi.png",
   "assets/unit_dao.png",
+  "assets/unit_luxmarid.png",
   "assets/unit_marid.png"
 ]
 
@@ -134,6 +135,7 @@ export enum COMMON_TEXTURE {
 'unit_bombwater' = 'assets/unit_bombwater.png',
 'unit_cappi' = 'assets/unit_cappi.png',
 'unit_dao' = 'assets/unit_dao.png',
+'unit_luxmarid' = 'assets/unit_luxmarid.png',
 'unit_marid' = 'assets/unit_marid.png'
 }
     
