@@ -10,7 +10,7 @@ import GameContent from "./gameContent";
 import store from "../store";
 import socket from "../socket";
 import app from "../app";
-import { MapBlock, TBubbleStyle, TGameInfo, TGamePlayer, TRoom } from "../global";
+import { MapBlock, TBubbleStyle, TGameBubble, TGameInfo, TGamePlayer, TRoom } from "../global";
 import Person from "../sprites/person";
 import Props from "../sprites/props";
 import mapFactory from "../textureFactory/mapFactory";
@@ -115,7 +115,7 @@ export default class GameStage extends Stage {
         floor.x = _index * GRID_WIDTH
         floor.y = index * GRID_WIDTH + GRID_WIDTH
         floor.zIndex = 0
-
+        
         if (_item.top) {
           const block = new Sprite((mapFactory().map_pirate as any)[_item.top])
           block.x = _index * GRID_WIDTH
@@ -123,29 +123,40 @@ export default class GameStage extends Stage {
           block.zIndex = index * 10 + 1
           _item.block = block
           this.addChild(block)
+          
         }
+
         content.addChild(floor)
       })
     })
     this.map = priateMap;
-
-
   }
 
-  async onCreateBubble(x: number, y: number, style: TBubbleStyle, power: number) {
-    if (this.bubbles.some(item => item.gridX == x && item.gridY == y)) {
+  async onCreateBubble(gridx: number, gridy: number, style: TBubbleStyle, power: number) {
+
+    if (!this.person) {
       return
     }
 
-    const bubble = new Bubble(bubbleFactory()[style], x, y, power)
-    bubble.zIndex = 1
-    this.addChild(bubble)
-    this.bubbles.push(bubble)
-
-    await new Promise(resolve => setTimeout(resolve, 3500))
-    if (this.bubbles.some(item => bubble == item)) {
-      this.checkBoomt(bubble)
+    if (this.bubbles.some(item => item.gridX == gridx && item.gridY == gridy)) {
+      return
     }
+
+    this.io.emit("putBubbles", <TGameBubble>{
+      gridX: gridx,
+      gridY: gridy,
+      power: power
+    }, () => null)
+
+    // const bubble = new Bubble(bubbleFactory()[style], x, y, power)
+    // bubble.zIndex = 1
+    // this.addChild(bubble)
+    // this.bubbles.push(bubble)
+
+    // await new Promise(resolve => setTimeout(resolve, 3500))
+    // if (this.bubbles.some(item => bubble == item)) {
+    //   this.checkBoomt(bubble)
+    // }
   }
 
   async checkBoomt(bubble: Bubble) {
@@ -352,7 +363,7 @@ export default class GameStage extends Stage {
   }
 
   onUpdate() {
-    if(this.person){
+    if (this.person) {
       this.person.zIndex = this.person.gridY * 10 + 2
     }
   }
@@ -406,14 +417,14 @@ export default class GameStage extends Stage {
     list.y = 85
     this.addChild(list);
 
-    const persons = first.players.map(item=>{
+    const persons = first.players.map(item => {
       const person = new Person(item.gridX, item.gridY)
       this.addChild(person)
-      if(store.name == item.name){
+      if (store.name == item.name) {
         this.person = person
         document.onkeydown = this.person.handleKeydown.bind(this.person)
         document.onkeyup = this.person.handleKeyup.bind(this.person)
-        setInterval(()=>{
+        setInterval(() => {
           person.hasChange && this.io.emit("changeprop", <TGamePlayer>{
             name: store.name,
             gridX: person.gridX,
@@ -433,10 +444,11 @@ export default class GameStage extends Stage {
       this.map[item.gridY][item.gridX].prop = item.props
     })
 
+    const lastBubs = []
     while (1) {
       const pack = await this.getSyncPack()
-      pack.players.forEach((item, index)=>{
-        if(store.name != item.name){
+      pack.players.forEach((item, index) => {
+        if (store.name != item.name) {
           persons[index].x = item.x
           persons[index].y = item.y
           persons[index].gridX = item.gridX
@@ -444,7 +456,17 @@ export default class GameStage extends Stage {
           persons[index].moveTarget = item.moveTarget
         }
       })
-      console.info(pack)
+      pack.bubbles.forEach(bub => {
+        if (this.bubbles.some(item => item.gridX == bub.gridX && item.gridY == bub.gridY)) {
+          // 已经存在于屏幕，不处理
+          return
+        } else {
+          const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, bub.power)
+          bubble.zIndex = 1
+          this.addChild(bubble)
+          this.bubbles.push(bubble)
+        }
+      })
     }
   }
 }

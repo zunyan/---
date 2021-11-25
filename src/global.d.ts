@@ -114,7 +114,16 @@ export enum TGamePlayerMoveTarget {
     Down = "Down",
     None = "None"
 }
+
+
+export interface TGameBubble {
+    gridX: number,
+    gridY: number,
+    power: number
+}
+
 export interface TGameInfo {
     props: TGameBox[],
     players: TGamePlayer[]
+    bubbles: TGameBubble[]
 }

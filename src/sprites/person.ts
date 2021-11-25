@@ -58,10 +58,12 @@ export default class Person extends Container {
     this.sprite.anchor.set(0.5, 0.75)
     this.sprite.gotoAndStop(4)
     this.addChild(this.sprite)
-
   }
 
   set moveTarget(val: TGamePlayerMoveTarget) {
+    if (this._moveTarget == val) {
+      return
+    }
     this._moveTarget = val
     switch (this.moveTarget) {
       case TGamePlayerMoveTarget.Left:
@@ -195,5 +197,5 @@ export default class Person extends Container {
     }
   }
 
-  
+
 }
