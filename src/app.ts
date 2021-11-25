@@ -36,11 +36,11 @@ export default new class App extends Application {
 
             // Setup the animation loop.
             TWEEN.update(performance.now())
-
         })
     }
 
     push(stage: any) {
+        console.info("app.push", stage.name)
 
         const _stage = new stage()
         const lastStage = this.stack[this.stack.length - 1]
@@ -58,11 +58,13 @@ export default new class App extends Application {
     }
 
     back() {
+        console.info("app.back")
+        debugger
         const lastStack = this.stack.pop()
         if (lastStack) {
             lastStack.onLeave().then(()=>{
                 this.stage.removeChild(lastStack)
-                lastStack.destroy()
+                lastStack.onDestroy()
             })
         }
 

@@ -1,9 +1,10 @@
 import { Container, Texture, Graphics, utils, Text, TextStyle, Sprite } from "pixi.js";
+import { TGamePlayerStatus } from "../global";
 
 interface Player {
   name: string,
   icon: Texture,
-  status: 'ALIVE' | 'DEAD'
+  status: TGamePlayerStatus
 }
 export default class PlayerList extends Sprite {
   constructor(players: Player[]) {

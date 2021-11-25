@@ -1,24 +1,22 @@
 import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { GRID_WIDTH } from "../constant";
-import textureFactory from "../textureFactory";
-import mapFactory from "../textureFactory/mapFactory";
-import * as TWEEN from '@tweenjs/tween.js'
-import { DisplayObject } from "pixi.js";
+import { TGamePropEnum } from "../global.d";
+import bazziFactoy from "../textureFactory/bazziFactoy";
+import propsFactory from "../textureFactory/propsFactory";
 
 export default class Props extends Container {
-    constructor(prop: string) {
+    constructor(prop: TGamePropEnum) {
         super()
 
-        const textureMap = textureFactory().bazzi
-        const shadow = new Sprite(textureMap.shadow);
+        const shadow = new Sprite(bazziFactoy().shadow);
         shadow.anchor.set(0.5, 1);
         shadow.y = -4
         shadow.x = GRID_WIDTH / 2 - 1
         // shadow.x = x + GRID_WIDTH /  2;
         // shadow.y = y + GRID_WIDTH /  2;
 
-        const block = new Sprite((mapFactory().map_pirate as any)[prop]);
+        const block = new Sprite(propsFactory()[prop]);
         block.y = -10
         // block.anchor.set(0, 0.5);
         this.addChild(shadow)

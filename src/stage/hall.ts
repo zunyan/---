@@ -9,7 +9,7 @@ import UIButton from "../sprites/UIButton";
 import { COMMON_TEXTURE } from "../COMMON";
 import btnFactory from "../textureFactory/btnfactory";
 import RoomCard from "../sprites/roomCard";
-import { TRoom, TRoomStatus } from "../global";
+import { TRoom } from "../global";
 import MessageBox from "../sprites/messageBox";
 
 export default class HallStage extends Stage {

@@ -229,3 +229,5 @@ export const priateMap: MapBlock[][] = [
     ]
 
 ]
+
+console.info(JSON.stringify(priateMap, null, 4))

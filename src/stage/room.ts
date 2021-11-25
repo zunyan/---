@@ -2,20 +2,26 @@ import Stage from "./stage";
 import socket from '../socket'
 import { HALL_SOCKET_URL, ROOM_SOCKET_URL, STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
 import store from "../store";
-import { Graphics, TextStyle, Text, Loader, Sprite } from "pixi.js";
+import { Graphics, TextStyle, Text, Loader, Sprite, IDestroyOptions } from "pixi.js";
 import UIButton from "../sprites/UIButton";
 import app from "../app";
 import MessageBox from "../sprites/messageBox";
 import { COMMON_TEXTURE } from "../COMMON";
 import RoleSelector from "../sprites/roleSelector";
 import { TRoleEnum } from "../textureFactory/roleFactory";
-import { TRoom } from "../global";
+import { TPlayerStatus, TRoom, TPlayer } from "../global.d";
 import PlayerCard from "../sprites/playerCard";
+import UITextureButton from "../sprites/UITextureButton";
+import UIUtils from "../UIUtils";
+import GameStage from "./game";
 
 
 export default class RoomStage extends Stage {
   io: any;
   messageBox: MessageBox;
+  starBtn: UITextureButton;
+  roomInfo: TRoom | undefined;
+  me: TPlayer | undefined;
 
   constructor() {
     super()
@@ -25,10 +31,7 @@ export default class RoomStage extends Stage {
     createRoomBtn.on('click', this.handleOnLeaveRoom.bind(this))
     this.addChild(createRoomBtn)
 
-    // this.backgroundImage = Loader.shared.resources[COMMON_TEXTURE.hall].texture
     this.background = 0x1382f6
-
-
 
     const g = new Graphics()
     const fastDrawRoundedRect = (x: number, y: number, width: number, height: number, color: number, fill: number, round: number) => {
@@ -52,7 +55,6 @@ export default class RoomStage extends Stage {
     // fastDrawRoundedRect(5, -10, 455, 40, 0x0d3d7f, 0x0b44b6, 8)
     // fastDrawRoundedRect(5, -10, 455, 40, 0x0d3d7f, 0x0b44b6, 8)
 
-    
     this.addChild(g)
 
     const img = new Sprite(Loader.shared.resources[COMMON_TEXTURE.bg].texture)
@@ -67,20 +69,37 @@ export default class RoomStage extends Stage {
     this.messageBox.y = 390
     this.addChild(this.messageBox)
 
-    const startBtn = new Sprite(Loader.shared.resources[COMMON_TEXTURE.btn_room_start].texture)
+    const startBtn = this.starBtn = new UITextureButton(Loader.shared.resources[COMMON_TEXTURE.btn_room_ready].texture)
     startBtn.x = 535
     startBtn.y = 480
+    startBtn.on('click', this.handleOnStartBtnClick.bind(this))
     this.addChild(startBtn)
 
     const roleSelector = new RoleSelector()
     roleSelector.x = 488
-    roleSelector.y= 250
-    roleSelector.onSelected((v: TRoleEnum)=>{
-        this.io.emit('choosePlayer',v, ()=>{})  
+    roleSelector.y = 250
+    roleSelector.onSelected((v: TRoleEnum) => {
+      this.io.emit('choosePlayer', v, () => { })
     })
     this.addChild(roleSelector)
   }
 
+  handleOnStartBtnClick() {
+    if (!this.me || !this.roomInfo) {
+      return
+    }
+
+    if (this.me.isMaster) {
+      if (this.roomInfo.players.some(item => item.status == TPlayerStatus.PENDING && !item.isMaster)) {
+        // 还有玩家没准备好
+        UIUtils.toast("还有玩家未准备")
+      } else {
+        this.io.emit("start", undefined, () => null)
+      }
+    } else {
+      this.io.emit("ready", undefined, () => null)
+    }
+  }
   handleOnLeaveRoom() {
     app.back()
   }
@@ -100,15 +119,54 @@ export default class RoomStage extends Stage {
       this.messageBox.push(msg)
     })
 
-    this.io.on('disconnect', ()=>{
-      app.back()
+    this.io.on('disconnect', () => {
+      // app.back()
     })
+
+    this.io.on("gameStart", () => {
+      app.push(GameStage)
+    })
+
     return Stage.prototype.onEnter.call(this)
   }
 
   sync(room: TRoom) {
+    this.roomInfo = room
+    console.info(room)
     this.renderRoomName(room)
     this.renderPlayCard(room)
+
+    const me = this.me = room.players.find(item => item.name == store.name)
+    if (!me) {
+      app.back()
+    }
+
+    if (me?.isMaster) {
+      this.starBtn.baseTexture = this.starBtn.texture =
+        <any>Loader.shared.resources[COMMON_TEXTURE.btn_room_start].texture
+    }
+  }
+
+  getSyncPack(): Promise<TRoom> {
+    return new Promise(resolve => {
+      this.io.once('sync', resolve)
+    })
+  }
+
+  async loop() {
+    const first = await this.getSyncPack()
+    // 第一次，进行变量的初始化
+
+
+    while (1) {
+
+    }
+
+
+
+    const room: TRoom = await new Promise(resolve => {
+      this.io.once('sync', resolve)
+    })
   }
 
   renderRoomName(room: TRoom) {

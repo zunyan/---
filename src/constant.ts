@@ -7,6 +7,6 @@ export const STAGE_HEIGHT = 600
 export const GRID_WIDTH_BOX = 15
 export const GRID_HEIGHT_BOX = 13
 
-
-export const HALL_SOCKET_URL = "http://192.168.65.122:8000/hall"
-export const ROOM_SOCKET_URL = "http://192.168.65.122:8000/room"
+export const HALL_SOCKET_URL = "http://localhost:8000/hall"
+export const ROOM_SOCKET_URL = "http://localhost:8000/room"
+export const GAME_SOCKET_URL = "http://localhost:8000/game"

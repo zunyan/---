@@ -26,7 +26,7 @@ interface MapBlock {
     floor: string,
     top: string,
     type: boolean,
-    prop?: string
+    prop?: TGamePropEnum
 }
 
 type TBubbleStyle = "RANBOW" |
@@ -53,17 +53,68 @@ export enum TPlayerStatus {
     READY = 1,
 }
 
-interface TPlayer {
+export interface TPlayer {
     name: string,
     status: TPlayerStatus,
     role: TRoleEnum,
     isMaster: boolean
 }
 
-interface TRoom {
+export interface TRoom {
     id: string,
     name: string,
     players: TPlayer[],
     totalPlayer: number,
     status: TRoomStatus
+}
+
+export enum TGamePlayerStatus {
+    GAME_PROPS_ALIVE = 1,
+    GAME_PROPS_DEAD = 2
+}
+export interface TGamePlayer {
+    gridX: number,
+    gridY: number,
+    name: string,
+    status: TGamePlayerStatus,
+    speed: number,
+    power: number,
+    bubbles: number,
+    x: number,
+    y: number,
+    moveTarget: TGamePlayerMoveTarget
+}
+
+export interface TGamePlayerLoaction {
+    gridX: number,
+    gridY: number,
+    x: number,
+    y: number,
+}
+
+// TGamePropEnum
+export enum TGamePropEnum {
+    TGamePropEnum_NONE = 0,
+    TGamePropEnum_SHOSE = 1,
+    TGamePropEnum_LOTION = 2,
+    TGamePropEnum_BUBBLES = 3,
+}
+
+export interface TGameBox {
+    gridX: number,
+    gridY: number,
+    status: boolean,
+    props: TGamePropEnum
+}
+
+export enum TGamePlayerMoveTarget {
+    Left = "Left",
+    Right = "Right",
+    Up = "Up",
+    Down = "Down",
+    None = "None"
+}
+export interface TGameInfo {
+    props: TGameBox[],
+    players: TGamePlayer[]
 }

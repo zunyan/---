@@ -1,16 +1,13 @@
-import { AnimatedSprite, Container, Loader, Sprite } from "pixi.js";
+import { AnimatedSprite, Container, Sprite } from "pixi.js";
 import { GRID_HEIGHT, GRID_WIDTH } from "../constant";
-import { TBubbleStyle, TPersonTextureMap } from "../global";
-import GameStage from "../stage/game";
+import { TBubbleStyle, TGamePlayerMoveTarget } from "../global.d";
 import GameContent from "../stage/gameContent";
 import textureFactory from "../textureFactory";
-import bubbleFactory from "../textureFactory/bubbleFactory";
-import Bubble from "./bubble";
 
-type TPersonMoveTarget = "Left" | "Right" | "Up" | "Down" | "None"
 
 export default class Person extends Container {
 
+  hasChange: boolean = false
   keyEvent: string[] = []
 
   // 
@@ -29,7 +26,7 @@ export default class Person extends Container {
 
   // style setting
   bubbleStyle: TBubbleStyle = "RANBOW"
-  _moveTarget: TPersonMoveTarget = "None";
+  _moveTarget: TGamePlayerMoveTarget = TGamePlayerMoveTarget.None;
 
   constructor(gridX: number, gridY: number) {
     super()
@@ -64,10 +61,10 @@ export default class Person extends Container {
 
   }
 
-  set moveTarget(val: TPersonMoveTarget) {
+  set moveTarget(val: TGamePlayerMoveTarget) {
     this._moveTarget = val
     switch (this.moveTarget) {
-      case "Left":
+      case TGamePlayerMoveTarget.Left:
         this.sprite.textures = [
           this.textureMap.right_1,
           this.textureMap.right_2,
@@ -77,7 +74,7 @@ export default class Person extends Container {
         ]
         this.sprite.scale.set(-1, 1);
         break;
-      case "Right":
+      case TGamePlayerMoveTarget.Right:
         this.sprite.textures = [
           this.textureMap.right_1,
           this.textureMap.right_2,
@@ -87,7 +84,7 @@ export default class Person extends Container {
         ]
         this.sprite.scale.set(1, 1);
         break;
-      case "Up":
+      case TGamePlayerMoveTarget.Up:
         this.sprite.textures = [
           this.textureMap.up_1,
           this.textureMap.up_2,
@@ -97,7 +94,7 @@ export default class Person extends Container {
         ]
         this.sprite.scale.set(1, 1);
         break;
-      case "Down":
+      case TGamePlayerMoveTarget.Down:
         this.sprite.textures = [
           this.textureMap.down_1,
           this.textureMap.down_2,
@@ -110,7 +107,7 @@ export default class Person extends Container {
     }
   }
 
-  get moveTarget(): TPersonMoveTarget {
+  get moveTarget(): TGamePlayerMoveTarget {
     return this._moveTarget
   }
 
@@ -153,12 +150,12 @@ export default class Person extends Container {
       this.sprite.stop()
       this.keyEvent = this.keyEvent.filter(item => item != e.code)
       switch (this.keyEvent[this.keyEvent.length - 1]) {
-        case "ArrowLeft": this.moveTarget = 'Left'; break;
-        case "ArrowRight": this.moveTarget = 'Right'; break;
-        case "ArrowUp": this.moveTarget = 'Up'; break;
-        case "ArrowDown": this.moveTarget = 'Down'; break;
+        case "ArrowLeft": this.moveTarget = TGamePlayerMoveTarget.Left; break;
+        case "ArrowRight": this.moveTarget = TGamePlayerMoveTarget.Right; break;
+        case "ArrowUp": this.moveTarget = TGamePlayerMoveTarget.Up; break;
+        case "ArrowDown": this.moveTarget = TGamePlayerMoveTarget.Down; break;
         default:
-          this.moveTarget = 'None'
+          this.moveTarget = TGamePlayerMoveTarget.None
       }
     }
   }
@@ -193,6 +190,10 @@ export default class Person extends Container {
       this.gridY = gridY
       this.x = x
       this.y = y
+
+      this.hasChange = true
     }
   }
+
+  
 }

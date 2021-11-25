@@ -6,7 +6,6 @@ import Person from "../sprites/person";
 import bubbleFactory from "../textureFactory/bubbleFactory";
 import mapFactory from "../textureFactory/mapFactory";
 import { priateMap } from '../map/pirate'
-import textureFactory from "../textureFactory";
 import Props from "../sprites/props";
 
 export default class GameContent extends Container {

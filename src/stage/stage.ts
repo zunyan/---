@@ -1,4 +1,4 @@
-import { Container, DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
+import { Container, DisplayObject, Graphics, IDestroyOptions, Sprite, Texture } from "pixi.js";
 import { STAGE_HEIGHT, STAGE_WIDTH } from "../constant";
 import * as TWEEN from '@tweenjs/tween.js'
 
@@ -22,14 +22,14 @@ export default class Stage extends Container {
     return STAGE_HEIGHT
   }
 
-  set background(color: number){
+  set background(color: number) {
     this.bg.beginFill(color)
     this.bg.drawRect(0, 0, this.width, this.height)
     this.bg.endFill()
   }
 
-  set backgroundImage(texture: Texture | undefined){
-    if(texture){
+  set backgroundImage(texture: Texture | undefined) {
+    if (texture) {
       this.bgImg.texture = texture
     }
   }
@@ -54,7 +54,6 @@ export default class Stage extends Container {
     })
   }
 
-  destroy() {
-
+  onDestroy() {
   }
 }

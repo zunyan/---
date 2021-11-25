@@ -46,14 +46,15 @@ export default class RoomCard extends Sprite {
         this.roomStatus = status
     }
 
-    set roomStatus(status: TRoomStatus){
+
+    set roomStatus(status: TRoomStatus) {
         const texture = {
             [TRoomStatus.IN_GAME]: Loader.shared.resources[COMMON_TEXTURE.room_card_status_in_game].texture,
             [TRoomStatus.WAITING]: Loader.shared.resources[COMMON_TEXTURE.room_card_status_waiting].texture,
         }[status]
-        if(this.statusSprite){
+        if (this.statusSprite) {
             this.statusSprite.texture = <any>texture
-        }else{
+        } else {
             this.statusSprite = new Sprite(texture)
             this.statusSprite.x = 110
             this.statusSprite.y = 80
