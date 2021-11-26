@@ -122,8 +122,18 @@ export interface TGameBubble {
     power: number
 }
 
+export interface TGameBoomBubble{
+    gridX: number,
+    gridY: number,
+    left: number,
+    right: number,
+    top: number,
+    bottom: number
+}
+
 export interface TGameInfo {
     props: TGameBox[],
     players: TGamePlayer[]
-    bubbles: TGameBubble[]
+    bubbles: TGameBubble[],
+    boomBubbles: TGameBoomBubble[]
 }

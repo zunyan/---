@@ -115,7 +115,6 @@ export default class GameStage extends Stage {
         floor.x = _index * GRID_WIDTH
         floor.y = index * GRID_WIDTH + GRID_WIDTH
         floor.zIndex = 0
-        
         if (_item.top) {
           const block = new Sprite((mapFactory().map_pirate as any)[_item.top])
           block.x = _index * GRID_WIDTH
@@ -123,7 +122,6 @@ export default class GameStage extends Stage {
           block.zIndex = index * 10 + 1
           _item.block = block
           this.addChild(block)
-          
         }
 
         content.addChild(floor)
@@ -433,6 +431,8 @@ export default class GameStage extends Stage {
             y: person.y,
             moveTarget: person.moveTarget
           })
+
+          person.hasChange = false
         }, 30)
       }
 
@@ -444,7 +444,6 @@ export default class GameStage extends Stage {
       this.map[item.gridY][item.gridX].prop = item.props
     })
 
-    const lastBubs = []
     while (1) {
       const pack = await this.getSyncPack()
       pack.players.forEach((item, index) => {
@@ -456,9 +455,31 @@ export default class GameStage extends Stage {
           persons[index].moveTarget = item.moveTarget
         }
       })
+
+      // 将服务端返回的泡泡进行map转换
+      const map2: { [x: string]: TGameBubble } = {}
+      for (let i of pack.bubbles) {
+        const uuid = `${i.gridX}_${i.gridY}`
+        map2[uuid] = i
+      }
+
+      // 对本地的泡泡进行处理，将已经不存在的泡泡删除掉
+      const map: { [x: string]: Bubble } = {}
+      this.bubbles = this.bubbles.filter(item=>{
+        const uuid = `${item.gridX}_${item.gridY}`
+        map[uuid] = item
+        if(map2[uuid]){
+          return true
+        }else{
+          this.removeChild(item)
+          return false
+        }
+      })
+
       pack.bubbles.forEach(bub => {
-        if (this.bubbles.some(item => item.gridX == bub.gridX && item.gridY == bub.gridY)) {
-          // 已经存在于屏幕，不处理
+        const uuid = `${bub.gridX}_${bub.gridY}`
+        if(map[uuid]){
+          // 已经存在，不处理
           return
         } else {
           const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, bub.power)
@@ -467,6 +488,14 @@ export default class GameStage extends Stage {
           this.bubbles.push(bubble)
         }
       })
+
+      // pack.boomBubbles.forEach(bub=>{
+      //   const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, 1)
+      //   bubble.zIndex = 1
+      //   this.addChild(bubble)
+      //   bubble.boom(bub.left, bub.right, bub.top, bub.bottom)
+      // })
+
     }
   }
 }

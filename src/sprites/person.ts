@@ -64,6 +64,7 @@ export default class Person extends Container {
     if (this._moveTarget == val) {
       return
     }
+    this.hasChange = true
     this._moveTarget = val
     switch (this.moveTarget) {
       case TGamePlayerMoveTarget.Left:
