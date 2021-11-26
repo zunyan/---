@@ -134,7 +134,7 @@ export default class Person extends Container {
       this.keyEvent.push(e.code)
     } else if (e.code == 'Space') {
 
-      (this.parent as GameContent).onCreateBubble(
+      (this.parent.parent as GameContent).onCreateBubble(
         this.gridX,
         this.gridY,
         this.bubbleStyle,
@@ -185,7 +185,7 @@ export default class Person extends Container {
 
     if (
       (this.gridX == gridX && this.gridY == gridY) ||
-      (this.parent as GameContent).iCanGo(gridX, gridY, x, y)
+      (this.parent.parent as GameContent).iCanGo(gridX, gridY, x, y)
 
     ) {
       // 更新grid

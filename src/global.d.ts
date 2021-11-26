@@ -133,7 +133,6 @@ export interface TGameBoomBubble{
 
 export interface TGameInfo {
     props: TGameBox[],
-    players: TGamePlayer[]
+    players: TGamePlayer[],
     bubbles: TGameBubble[],
-    boomBubbles: TGameBoomBubble[]
 }

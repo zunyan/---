@@ -10,7 +10,7 @@ import GameContent from "./gameContent";
 import store from "../store";
 import socket from "../socket";
 import app from "../app";
-import { MapBlock, TBubbleStyle, TGameBubble, TGameInfo, TGamePlayer, TRoom } from "../global";
+import { MapBlock, TBubbleStyle, TGameBoomBubble, TGameBox, TGameBubble, TGameInfo, TGamePlayer, TRoom } from "../global";
 import Person from "../sprites/person";
 import Props from "../sprites/props";
 import mapFactory from "../textureFactory/mapFactory";
@@ -18,62 +18,6 @@ import mapFactory from "../textureFactory/mapFactory";
 export default class GameStage extends Stage {
 
   io: any;
-
-  // constructor() {
-  //   super()
-
-  //   this.background = 0x0a5fb9;
-
-  //   const g = new Graphics()
-  //   const fastDrawRoundedRect = (x: number, y: number, width: number, height: number, color: number, fill: number, round: number) => {
-  //     g.lineStyle({ color: color, width: 1 })
-  //     g.beginFill(fill)
-  //     g.drawRoundedRect(x, y, width, height, round);
-  //     g.endFill()
-  //   }
-
-  //   fastDrawRoundedRect(
-  //     0, 0, GRID_WIDTH_BOX * GRID_WIDTH + 20, GRID_HEIGHT_BOX * GRID_WIDTH + 20, 
-  //     0x327bb2, 0x000000, 8
-  //   )
-  //   fastDrawRoundedRect(
-  //     5, 5, GRID_WIDTH_BOX * GRID_WIDTH + 10, GRID_HEIGHT_BOX * GRID_WIDTH + 10, 
-  //     0x44414a, 0x696772, 8
-  //   )
-  //   fastDrawRoundedRect(
-  //     10, 10, GRID_WIDTH_BOX * GRID_WIDTH, GRID_HEIGHT_BOX * GRID_WIDTH,
-  //     0x44414a, 0x000, 8
-  //   )
-  //   g.x = 10
-  //   g.y = 35
-  //   this.addChild(g)
-
-  //   const content = new GameContent(priateMap)
-  //   content.x = 20
-  //   content.y = 45
-  //   this.addChild(content)
-
-  //   const leftBar = new Graphics()
-  //   leftBar.lineStyle({
-  //     color: 0x004a93,
-  //     width: 1
-  //   })
-  //   leftBar.beginFill(0x027ed8)
-  //   leftBar.drawRoundedRect(0, 0, 155, 540, 8)
-  //   leftBar.endFill()
-  //   leftBar.x = 638
-  //   leftBar.y = 35
-  //   this.addChild(leftBar)
-  //   // timer
-  //   const timer = new Timer()
-
-  //   timer.x = 645
-  //   timer.y = 45
-  //   this.addChild(timer)
-
-
-  //   //   //
-  //   // }
 
 
   //   // // 道具栏
@@ -90,23 +34,73 @@ export default class GameStage extends Stage {
   //   // this.addChild(toolBar)
 
 
-  // }
-
-  person: Person | undefined;
   bubbles: Bubble[] = [];
   map: MapBlock[][];
   content: Container;
+  persons: Person[] = [];
 
   constructor() {
     super()
+
+    this.background = 0x0a5fb9;
+
+    const g = new Graphics()
+    const fastDrawRoundedRect = (x: number, y: number, width: number, height: number, color: number, fill: number, round: number) => {
+      g.lineStyle({ color: color, width: 1 })
+      g.beginFill(fill)
+      g.drawRoundedRect(x, y, width, height, round);
+      g.endFill()
+    }
+
+    fastDrawRoundedRect(
+      0, 0, GRID_WIDTH_BOX * GRID_WIDTH + 20, GRID_HEIGHT_BOX * GRID_WIDTH + 20, 
+      0x327bb2, 0x000000, 8
+    )
+    fastDrawRoundedRect(
+      5, 5, GRID_WIDTH_BOX * GRID_WIDTH + 10, GRID_HEIGHT_BOX * GRID_WIDTH + 10, 
+      0x44414a, 0x696772, 8
+    )
+    fastDrawRoundedRect(
+      10, 10, GRID_WIDTH_BOX * GRID_WIDTH, GRID_HEIGHT_BOX * GRID_WIDTH,
+      0x44414a, 0x000, 8
+    )
+    g.x = 10
+    g.y = 35
+    this.addChild(g)
+
+    const leftBar = new Graphics()
+    leftBar.lineStyle({
+      color: 0x004a93,
+      width: 1
+    })
+    leftBar.beginFill(0x027ed8)
+    leftBar.drawRoundedRect(0, 0, 155, 540, 8)
+    leftBar.endFill()
+    leftBar.x = 638
+    leftBar.y = 35
+    this.addChild(leftBar)
+    // timer
+    const timer = new Timer()
+
+    timer.x = 645
+    timer.y = 45
+    this.addChild(timer)
+
     const map = priateMap
-    const content = this.content = new Container()
+    const mapLayer = new Container()
     const mask = new Graphics()
     mask.beginFill(0xFF3300)
     mask.drawRoundedRect(0, 0, GRID_WIDTH * GRID_WIDTH_SIZE, GRID_HEIGHT * GRID_HEIGHT_SIZE, 8)
     mask.endFill()
-    content.mask = mask
-    content.addChild(mask)
+    mapLayer.mask = mask
+    mapLayer.x = 20
+    mapLayer.y = 45
+    mapLayer.addChild(mask)
+    this.addChild(mapLayer)
+
+    const content = this.content = new Container()
+    content.x = 20
+    content.y = 45
     this.addChild(content)
 
     map.forEach((item: MapBlock[], index) => {
@@ -121,20 +115,16 @@ export default class GameStage extends Stage {
           block.y = index * GRID_WIDTH + GRID_WIDTH
           block.zIndex = index * 10 + 1
           _item.block = block
-          this.addChild(block)
+          content.addChild(block)
         }
 
-        content.addChild(floor)
+        mapLayer.addChild(floor)
       })
     })
     this.map = priateMap;
   }
 
   async onCreateBubble(gridx: number, gridy: number, style: TBubbleStyle, power: number) {
-
-    if (!this.person) {
-      return
-    }
 
     if (this.bubbles.some(item => item.gridX == gridx && item.gridY == gridy)) {
       return
@@ -356,14 +346,14 @@ export default class GameStage extends Stage {
       gridX >= 0 && GRID_WIDTH_SIZE > gridX && // 不超过屏幕尺寸
       gridY >= 0 && GRID_HEIGHT_SIZE > gridY && // 不超过屏幕尺寸
       !this.map[gridY][gridX].type && // 前方没有障碍物 - 不可破坏类型
-      !this.map[gridY][gridX].top && // 前方没有障碍物 - 可破坏类型
+      !this.map[gridY][gridX].block && // 前方没有障碍物 - 可破坏类型
       !this.bubbles.some(item => item.gridX == gridX && item.gridY == gridY) // 没有气泡
   }
 
   onUpdate() {
-    if (this.person) {
-      this.person.zIndex = this.person.gridY * 10 + 2
-    }
+    this.persons.forEach(person=>{
+      person.zIndex = person.gridY * 10 + 2
+    })
   }
 
   onEnter() {
@@ -382,6 +372,15 @@ export default class GameStage extends Stage {
       // app.back()
     })
 
+    this.io.on('boomBubble', (booms: TGameBoomBubble[]) => {
+      booms.forEach(bub => {
+        const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, 1)
+        bubble.zIndex = 1
+        this.content.addChild(bubble)
+        bubble.boom(bub.left, bub.right, bub.top, bub.bottom)
+      })
+    })
+
     return Stage.prototype.onEnter.call(this)
   }
 
@@ -398,8 +397,6 @@ export default class GameStage extends Stage {
 
   async loop() {
     const first = await this.getSyncPack()
-    // 第一次，进行变量的初始化
-    console.info(first)
 
     // 创建玩家列表
     const list = new PlayerList(
@@ -415,13 +412,12 @@ export default class GameStage extends Stage {
     list.y = 85
     this.addChild(list);
 
-    const persons = first.players.map(item => {
+    const persons = this.persons = first.players.map(item => {
       const person = new Person(item.gridX, item.gridY)
-      this.addChild(person)
+      this.content.addChild(person)
       if (store.name == item.name) {
-        this.person = person
-        document.onkeydown = this.person.handleKeydown.bind(this.person)
-        document.onkeyup = this.person.handleKeyup.bind(this.person)
+        document.onkeydown = person.handleKeydown.bind(person)
+        document.onkeyup = person.handleKeyup.bind(person)
         setInterval(() => {
           person.hasChange && this.io.emit("changeprop", <TGamePlayer>{
             name: store.name,
@@ -465,37 +461,46 @@ export default class GameStage extends Stage {
 
       // 对本地的泡泡进行处理，将已经不存在的泡泡删除掉
       const map: { [x: string]: Bubble } = {}
-      this.bubbles = this.bubbles.filter(item=>{
+      this.bubbles = this.bubbles.filter(item => {
         const uuid = `${item.gridX}_${item.gridY}`
         map[uuid] = item
-        if(map2[uuid]){
+        if (map2[uuid]) {
           return true
-        }else{
-          this.removeChild(item)
+        } else {
+          item.parent.removeChild(item)
           return false
         }
       })
 
       pack.bubbles.forEach(bub => {
         const uuid = `${bub.gridX}_${bub.gridY}`
-        if(map[uuid]){
+        if (map[uuid]) {
           // 已经存在，不处理
           return
         } else {
           const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, bub.power)
           bubble.zIndex = 1
-          this.addChild(bubble)
+          this.content.addChild(bubble)
           this.bubbles.push(bubble)
         }
       })
 
-      // pack.boomBubbles.forEach(bub=>{
-      //   const bubble = new Bubble(bubbleFactory()['RANBOW'], bub.gridX, bub.gridY, 1)
-      //   bubble.zIndex = 1
-      //   this.addChild(bubble)
-      //   bubble.boom(bub.left, bub.right, bub.top, bub.bottom)
-      // })
+      // 
+      const boxMap: { [x: string]: TGameBox } = {}
+      pack.props.forEach(item => {
+        boxMap[`${item.gridX}_${item.gridY}`] = item
+      })
+      this.map.forEach((line, gridY) => {
+        line.forEach((item, gridX) => {
+          const key = `${gridX}_${gridY}`
+          if (boxMap[key]) {
 
+          } else if (item.block) {
+            item.block.parent.removeChild(item.block)
+            item.block = undefined
+          }
+        })
+      })
     }
   }
 }
