@@ -8,7 +8,7 @@ import app from "../app";
 import MessageBox from "../sprites/messageBox";
 import { COMMON_TEXTURE } from "../COMMON";
 import RoleSelector from "../sprites/roleSelector";
-import { TRoleEnum } from "../textureFactory/roleFactory";
+import { TGameRole } from "../textureFactory/roleSelectFactory";
 import { TPlayerStatus, TRoom, TPlayer } from "../global.d";
 import PlayerCard from "../sprites/playerCard";
 import UITextureButton from "../sprites/UITextureButton";
@@ -78,7 +78,7 @@ export default class RoomStage extends Stage {
     const roleSelector = new RoleSelector()
     roleSelector.x = 488
     roleSelector.y = 250
-    roleSelector.onSelected((v: TRoleEnum) => {
+    roleSelector.onSelected((v: TGameRole) => {
       this.io.emit('choosePlayer', v, () => { })
     })
     this.addChild(roleSelector)

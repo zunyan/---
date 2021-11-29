@@ -1,4 +1,4 @@
-import { Container, DisplayObject, Graphics, Sprite, utils } from "pixi.js";
+import { Container, DisplayObject, Graphics, Rectangle, Sprite, utils } from "pixi.js";
 import { GRID_HEIGHT, GRID_HEIGHT_SIZE, GRID_WIDTH, GRID_WIDTH_SIZE, STAGE_HEIGHT, STAGE_WIDTH, GRID_HEIGHT_BOX, GRID_WIDTH_BOX, ROOM_SOCKET_URL, GAME_SOCKET_URL } from "../constant";
 import Bubble from "../sprites/bubble";
 import bubbleFactory from "../textureFactory/bubbleFactory";
@@ -6,11 +6,10 @@ import Stage from "./stage";
 import PlayerList from "../sprites/playerList";
 import Timer from "../sprites/timer";
 import { priateMap } from '../map/pirate'
-import GameContent from "./gameContent";
 import store from "../store";
 import socket from "../socket";
 import app from "../app";
-import { MapBlock, TBubbleStyle, TGameBoomBubble, TGameBox, TGameBubble, TGameInfo, TGamePlayer, TRoom } from "../global";
+import { MapBlock, TBubbleStyle, TGameBoomBubble, TGameBox, TGameBubble, TGameInfo, TGamePlayer, TGamePlayerMoveTarget } from "../global.d";
 import Person from "../sprites/person";
 import Props from "../sprites/props";
 import mapFactory from "../textureFactory/mapFactory";
@@ -38,6 +37,7 @@ export default class GameStage extends Stage {
   map: MapBlock[][];
   content: Container;
   persons: Person[] = [];
+  me: Person | undefined;
 
   constructor() {
     super()
@@ -53,11 +53,11 @@ export default class GameStage extends Stage {
     }
 
     fastDrawRoundedRect(
-      0, 0, GRID_WIDTH_BOX * GRID_WIDTH + 20, GRID_HEIGHT_BOX * GRID_WIDTH + 20, 
+      0, 0, GRID_WIDTH_BOX * GRID_WIDTH + 20, GRID_HEIGHT_BOX * GRID_WIDTH + 20,
       0x327bb2, 0x000000, 8
     )
     fastDrawRoundedRect(
-      5, 5, GRID_WIDTH_BOX * GRID_WIDTH + 10, GRID_HEIGHT_BOX * GRID_WIDTH + 10, 
+      5, 5, GRID_WIDTH_BOX * GRID_WIDTH + 10, GRID_HEIGHT_BOX * GRID_WIDTH + 10,
       0x44414a, 0x696772, 8
     )
     fastDrawRoundedRect(
@@ -130,11 +130,7 @@ export default class GameStage extends Stage {
       return
     }
 
-    this.io.emit("putBubbles", <TGameBubble>{
-      gridX: gridx,
-      gridY: gridy,
-      power: power
-    }, () => null)
+    this.io.emit("putBubbles", null, () => null)
 
     // const bubble = new Bubble(bubbleFactory()[style], x, y, power)
     // bubble.zIndex = 1
@@ -351,7 +347,7 @@ export default class GameStage extends Stage {
   }
 
   onUpdate() {
-    this.persons.forEach(person=>{
+    this.persons.forEach(person => {
       person.zIndex = person.gridY * 10 + 2
     })
   }
@@ -413,9 +409,10 @@ export default class GameStage extends Stage {
     this.addChild(list);
 
     const persons = this.persons = first.players.map(item => {
-      const person = new Person(item.gridX, item.gridY)
+      const person = new Person(item.gridX, item.gridY, item.name, item.role)
       this.content.addChild(person)
       if (store.name == item.name) {
+        this.me = person
         document.onkeydown = person.handleKeydown.bind(person)
         document.onkeyup = person.handleKeyup.bind(person)
         setInterval(() => {

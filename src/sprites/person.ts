@@ -1,8 +1,10 @@
-import { AnimatedSprite, Container, Sprite } from "pixi.js";
+import { AnimatedSprite, Container, Sprite, Text, TextStyle } from "pixi.js";
 import { GRID_HEIGHT, GRID_WIDTH } from "../constant";
 import { TBubbleStyle, TGamePlayerMoveTarget } from "../global.d";
-import GameContent from "../stage/gameContent";
-import textureFactory from "../textureFactory";
+import game from "../stage/game";
+import commonFactory from "../textureFactory/commonFactory";
+import roleInGameFactory from "../textureFactory/roleInGameFactory";
+import { TGameRole } from "../textureFactory/roleSelectFactory";
 
 
 export default class Person extends Container {
@@ -28,19 +30,20 @@ export default class Person extends Container {
   bubbleStyle: TBubbleStyle = "RANBOW"
   _moveTarget: TGamePlayerMoveTarget = TGamePlayerMoveTarget.None;
 
-  constructor(gridX: number, gridY: number) {
+  constructor(gridX: number, gridY: number, name: string, role: TGameRole) {
     super()
 
-    this.zIndex = 2;
+    this.zIndex = 2
 
     this.gridX = gridX
     this.gridY = gridY
     this.x = gridX * GRID_WIDTH + GRID_WIDTH / 2
     this.y = gridY * GRID_HEIGHT + GRID_HEIGHT / 2
 
-    this.textureMap = textureFactory().bazzi
+    this.textureMap = roleInGameFactory()[role]
+
     // shadow
-    const shadow = new Sprite(this.textureMap.shadow)
+    const shadow = new Sprite(commonFactory().shadow)
     shadow.anchor.set(.5, -0.2)
     // shadow.alpha = 0.7
     this.addChild(shadow)
@@ -58,6 +61,18 @@ export default class Person extends Container {
     this.sprite.anchor.set(0.5, 0.75)
     this.sprite.gotoAndStop(4)
     this.addChild(this.sprite)
+
+    const text = new Text(name, new TextStyle({
+      fontSize: 14,
+      wordWrap: true,
+      breakWords: true,
+      fill: 0xffffff,
+      strokeThickness: 3,
+    }))
+
+    text.anchor.set(.5, .5)
+    text.y = - this.sprite.height * 0.75 - 15
+    this.addChild(text)
   }
 
   set moveTarget(val: TGamePlayerMoveTarget) {
@@ -134,7 +149,7 @@ export default class Person extends Container {
       this.keyEvent.push(e.code)
     } else if (e.code == 'Space') {
 
-      (this.parent.parent as GameContent).onCreateBubble(
+      (this.parent.parent as game).onCreateBubble(
         this.gridX,
         this.gridY,
         this.bubbleStyle,

@@ -1,6 +1,6 @@
 import { MapBlock } from "../global";
 
-const fn = (floor: string, top: string, type: boolean, prop?: string) => ({ floor, top, type, prop })
+const fn = (floor: string, top: string, type: boolean, prop?: string) => ({ floor, top, type, prop: <any>prop })
 
 export const priateMap: MapBlock[][] = [
     [

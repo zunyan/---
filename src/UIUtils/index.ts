@@ -26,11 +26,9 @@ export default {
             fill: 0xffffff
         }))
 
-        
-
         const g = new Graphics()
         g.beginFill(0x000, .2)
-        g.drawRoundedRect(0, 0, width, text.height + 10, 8)
+        g.drawRoundedRect(0, 0, width+ 15, text.height + 15, 8)
         
         text.anchor.set(.5, .5)
         text.x = g.width / 2

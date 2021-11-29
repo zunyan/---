@@ -2,14 +2,14 @@ import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { GRID_WIDTH } from "../constant";
 import { TGamePropEnum } from "../global.d";
-import bazziFactoy from "../textureFactory/bazziFactoy";
+import commonFactory from "../textureFactory/commonFactory";
 import propsFactory from "../textureFactory/propsFactory";
 
 export default class Props extends Container {
     constructor(prop: TGamePropEnum) {
         super()
 
-        const shadow = new Sprite(bazziFactoy().shadow);
+        const shadow = new Sprite(commonFactory().shadow);
         shadow.anchor.set(0.5, 1);
         shadow.y = -4
         shadow.x = GRID_WIDTH / 2 - 1

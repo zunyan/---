@@ -2,8 +2,7 @@ import { Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { TextStyle, utils, Text } from "pixi.js";
 import { TPlayer, TPlayerStatus } from "../global.d";
-import bazziFactoy from "../textureFactory/bazziFactoy";
-import { TRoleEnum } from "../textureFactory/roleFactory";
+import commonFactory from "../textureFactory/commonFactory";
 
 import roomFactory from "../textureFactory/roomFactory";
 
@@ -36,7 +35,7 @@ export default class PlayerCard extends Container {
             person.x = (playerCard.width - person.width) / 2
             person.y = 30
 
-            const shadow =  new Sprite(bazziFactoy().shadow)
+            const shadow =  new Sprite(commonFactory().shadow)
             shadow.x = playerCard.width / 2 - shadow.width / 2
             shadow.y = 75
             this.addChild(shadow)

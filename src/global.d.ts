@@ -1,5 +1,5 @@
 import { Sprite, Texture } from "pixi.js"
-import { TRoleEnum } from "./textureFactory/roleFactory"
+import { TGameRole } from "./textureFactory/roleSelectFactory"
 
 interface TPersonTextureMap {
     down_1: Texture,
@@ -22,9 +22,15 @@ interface TPersonTextureMap {
 }
 
 interface MapBlock {
+    /**
+     * 当前位于改位置的箱体，如果没有，那么会事undefined
+     */
     block?: Sprite
     floor: string,
     top: string,
+    /**
+     * 物体是否可被破坏
+     */
     type: boolean,
     prop?: TGamePropEnum
 }
@@ -56,7 +62,7 @@ export enum TPlayerStatus {
 export interface TPlayer {
     name: string,
     status: TPlayerStatus,
-    role: TRoleEnum,
+    role: TGameRole,
     isMaster: boolean
 }
 
@@ -82,7 +88,8 @@ export interface TGamePlayer {
     bubbles: number,
     x: number,
     y: number,
-    moveTarget: TGamePlayerMoveTarget
+    moveTarget: TGamePlayerMoveTarget,
+    role: TGameRole
 }
 
 export interface TGamePlayerLoaction {

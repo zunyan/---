@@ -1,14 +1,14 @@
 import { Loader, Rectangle, Texture } from "pixi.js";
 import { COMMON_TEXTURE } from "../COMMON";
 
-export enum TRoleEnum {
+export enum TGameRole {
     role_marid = 'role_marid',
     role_buzzi = 'role_buzzi',
     role_dao = 'role_dao',
     role_cappi = 'role_cappi'
 }
 
-type TRoleTexture = Record<TRoleEnum | "role_selected", Texture>
+type TRoleTexture = Record<TGameRole | "role_selected", Texture>
 
 let cache: any;
 

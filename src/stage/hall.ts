@@ -11,6 +11,7 @@ import btnFactory from "../textureFactory/btnfactory";
 import RoomCard from "../sprites/roomCard";
 import { TRoom } from "../global";
 import MessageBox from "../sprites/messageBox";
+import UITextureButton from "../sprites/UITextureButton";
 
 export default class HallStage extends Stage {
   io: any;
@@ -53,12 +54,12 @@ export default class HallStage extends Stage {
     this.addChild(box1)
 
     const btnbar = new Container()
-    const prePageBtn = new Sprite(btnFactory().btn_pre_page)
+    const prePageBtn = new UITextureButton(btnFactory().btn_pre_page)
     prePageBtn.interactive = true
     prePageBtn.on("click", this.prePage.bind(this))
     btnbar.addChild(prePageBtn)
 
-    const nextPageBtn = new Sprite(btnFactory().btn_next_page)
+    const nextPageBtn = new UITextureButton(btnFactory().btn_next_page)
     nextPageBtn.interactive = true
     nextPageBtn.on("click", this.nextPage.bind(this))
     nextPageBtn.x = prePageBtn.width + 10
