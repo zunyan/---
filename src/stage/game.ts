@@ -13,6 +13,7 @@ import { MapBlock, TBubbleStyle, TGameBoomBubble, TGameBox, TGameBubble, TGameIn
 import Person from "../sprites/person";
 import Props from "../sprites/props";
 import mapFactory from "../textureFactory/mapFactory";
+import Bump from 'pixi-plugin-bump'
 
 export default class GameStage extends Stage {
 
@@ -337,13 +338,199 @@ export default class GameStage extends Stage {
     })
   }
 
-  iCanGo(gridX: number, gridY: number, x: number, y: number): boolean {
-    return true &&
-      gridX >= 0 && GRID_WIDTH_SIZE > gridX && // 不超过屏幕尺寸
-      gridY >= 0 && GRID_HEIGHT_SIZE > gridY && // 不超过屏幕尺寸
-      !this.map[gridY][gridX].type && // 前方没有障碍物 - 不可破坏类型
-      !this.map[gridY][gridX].block && // 前方没有障碍物 - 可破坏类型
-      !this.bubbles.some(item => item.gridX == gridX && item.gridY == gridY) // 没有气泡
+  iCanGo(gridX: number, gridY: number, x: number, y: number) {
+    if (!this.me) {
+      return
+    }
+
+    // // 存在气泡
+    // if(this.bubbles.some(item => item.gridX == gridX && item.gridY == gridY)){
+    //   if(this.me.gridX == gridX && )
+    // }
+
+    let ngridX = Math.floor((x - GRID_WIDTH / 2) / GRID_WIDTH)
+    let ngridY = Math.floor((y - GRID_WIDTH / 2) / GRID_HEIGHT)
+
+    if (
+      gridX < 0 || GRID_WIDTH_SIZE <= gridX || // 不超过屏幕尺寸
+      gridY < 0 || GRID_HEIGHT_SIZE <= gridY || // 不超过屏幕尺寸
+      ngridX < 0 || GRID_WIDTH_SIZE <= ngridX || // 不超过屏幕尺寸
+      ngridY < 0 || GRID_HEIGHT_SIZE <= ngridY // 不超过屏幕尺寸
+    ) {
+      return false
+    }
+
+    const personHitArea = new Rectangle(
+      x - GRID_WIDTH / 2,
+      y - GRID_WIDTH / 2,
+      GRID_WIDTH,
+      GRID_WIDTH
+    )
+
+    function hitTest(personHitArea: Rectangle, i: Rectangle) {
+      const a = Math.abs((personHitArea.left + personHitArea.right) / 2 - (i.left + i.right) / 2)
+      const b = Math.abs((personHitArea.top + personHitArea.bottom) / 2 - (i.top + i.bottom) / 2)
+      const w = (personHitArea.width + i.width) / 2
+      const h = (personHitArea.height + i.height) / 2
+      if (a < w && b < h) {
+        return true;
+      } else {
+        return false
+      }
+    }
+    // // left
+    const me = this.me as Person
+    const moveTarget = me.moveTarget
+    if (me.gridY + 1 < GRID_HEIGHT_SIZE && moveTarget == 'Down') {
+
+      // 判断正前方是否有障碍物，如果有，无法通行
+      if (
+        (this.map[me.gridY + 1][me.gridX].block || this.bubbles.some(item=> item.gridX == me.gridX && item.gridY == me.gridY + 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX) * GRID_WIDTH,
+          (me.gridY + 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))) {
+        return
+      }
+
+      // 如果正前方无障碍物，但是周围有障碍物，则需要矫正角色的位置
+      if (
+        me.gridX > 0 &&
+        (this.map[me.gridY + 1][me.gridX-1].block || this.bubbles.some(item=> item.gridX == me.gridX-1 && item.gridY == me.gridY + 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX - 1) * GRID_WIDTH,
+          (me.gridY + 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        x = GRID_WIDTH * gridX + GRID_WIDTH / 2
+      } else if (
+        me.gridX < GRID_WIDTH_SIZE - 1 &&
+        (this.map[me.gridY + 1][me.gridX + 1].block || this.bubbles.some(item=> item.gridX == me.gridX + 1 && item.gridY == me.gridY + 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX + 1) * GRID_WIDTH,
+          (me.gridY + 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        x = GRID_WIDTH * gridX + GRID_WIDTH / 2
+      }
+    }
+
+    if (me.gridY > 0 && moveTarget == 'Up') {
+      // 判断正前方是否有障碍物，如果有，无法通行
+      if (
+        (this.map[me.gridY - 1][me.gridX].block || this.bubbles.some(item=> item.gridX == me.gridX && item.gridY == me.gridY - 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX) * GRID_WIDTH,
+          (me.gridY - 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))) {
+        return
+      }
+
+      // 如果正前方无障碍物，但是周围有障碍物，则需要矫正角色的位置
+      if (
+        me.gridX > 0 &&
+        (this.map[me.gridY - 1][me.gridX - 1].block || this.bubbles.some(item=> item.gridX == me.gridX - 1 && item.gridY == me.gridY - 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX - 1) * GRID_WIDTH,
+          (me.gridY - 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        x = GRID_WIDTH * gridX + GRID_WIDTH / 2
+      } else if (
+        me.gridX < GRID_WIDTH_SIZE - 1 &&
+        (this.map[me.gridY - 1][me.gridX + 1].block || this.bubbles.some(item=> item.gridX == me.gridX + 1 && item.gridY == me.gridY - 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX + 1) * GRID_WIDTH,
+          (me.gridY - 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        x = GRID_WIDTH * gridX + GRID_WIDTH / 2
+      }
+    }
+
+    if (me.gridX + 1 < GRID_WIDTH_SIZE && moveTarget == 'Right') {
+      // 判断正前方是否有障碍物，如果有，无法通行
+      if (
+        (this.map[me.gridY][me.gridX + 1].block || this.bubbles.some(item=> item.gridX == me.gridX + 1 && item.gridY == me.gridY)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX + 1) * GRID_WIDTH,
+          (me.gridY) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))) {
+        return
+      }
+
+      // 如果正前方无障碍物，但是周围有障碍物，则需要矫正角色的位置
+      if (
+        me.gridY > 0 &&
+        (this.map[me.gridY - 1][me.gridX + 1].block || this.bubbles.some(item=> item.gridX == me.gridX + 1 && item.gridY == me.gridY - 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX + 1) * GRID_WIDTH,
+          (me.gridY - 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        y = GRID_WIDTH * gridY + GRID_WIDTH / 2
+      } else if (
+        me.gridY < GRID_HEIGHT_SIZE - 1 &&
+        (this.map[me.gridY + 1][me.gridX + 1].block || this.bubbles.some(item=> item.gridX == me.gridX + 1 && item.gridY == me.gridY + 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX + 1) * GRID_WIDTH,
+          (me.gridY + 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        y = GRID_WIDTH * gridY + GRID_WIDTH / 2
+      }
+    }
+    
+    if (me.gridX > 0 && moveTarget == 'Left') {
+      // 判断正前方是否有障碍物，如果有，无法通行
+      if (
+        (this.map[me.gridY][me.gridX - 1].block || this.bubbles.some(item=> item.gridX == me.gridX - 1 && item.gridY == me.gridY)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX - 1) * GRID_WIDTH,
+          (me.gridY) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))) {
+        return
+      }
+
+      // 如果正前方无障碍物，但是周围有障碍物，则需要矫正角色的位置
+      if (
+        me.gridY > 0 &&
+        (this.map[me.gridY - 1][me.gridX - 1].block || this.bubbles.some(item=> item.gridX == me.gridX - 1 && item.gridY == me.gridY - 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX - 1) * GRID_WIDTH,
+          (me.gridY - 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        y = GRID_WIDTH * gridY + GRID_WIDTH / 2
+      } else if (
+        me.gridY < GRID_HEIGHT_SIZE - 1 &&
+        (this.map[me.gridY + 1][me.gridX - 1].block || this.bubbles.some(item=> item.gridX == me.gridX - 1 && item.gridY == me.gridY + 1)) &&
+        hitTest(personHitArea, new Rectangle(
+          (me.gridX - 1) * GRID_WIDTH,
+          (me.gridY + 1) * GRID_WIDTH,
+          GRID_WIDTH, GRID_WIDTH
+        ))
+      ) {
+        y = GRID_WIDTH * gridY + GRID_WIDTH / 2
+      }
+    }
+
+    this.me.x = x
+    this.me.y = y
+    this.me.gridX = Math.floor(x / GRID_WIDTH)
+    this.me.gridY = Math.floor(y / GRID_HEIGHT)
+    this.me.hasChange = true
   }
 
   onUpdate() {
@@ -493,8 +680,10 @@ export default class GameStage extends Stage {
           if (boxMap[key]) {
 
           } else if (item.block) {
+            item.block.alpha = 0.5
             item.block.parent.removeChild(item.block)
             item.block = undefined
+            delete item.block
           }
         })
       })

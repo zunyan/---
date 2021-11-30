@@ -19,7 +19,7 @@ export default class Person extends Container {
   textureMap
   booms: any;
 
-  speed: number = 5
+  speed: number = 2
   speedLimit: number = 10
   power: number = 1
   powerLimit: number = 10
@@ -148,14 +148,12 @@ export default class Person extends Container {
       }[e.code]
       this.keyEvent.push(e.code)
     } else if (e.code == 'Space') {
-
       (this.parent.parent as game).onCreateBubble(
         this.gridX,
         this.gridY,
         this.bubbleStyle,
         this.power
       )
-
     }
   }
   handleKeyup(e: KeyboardEvent) {
@@ -198,19 +196,12 @@ export default class Person extends Container {
     let gridX = Math.floor(x / GRID_WIDTH)
     let gridY = Math.floor(y / GRID_HEIGHT)
 
-    if (
-      (this.gridX == gridX && this.gridY == gridY) ||
-      (this.parent.parent as GameContent).iCanGo(gridX, gridY, x, y)
-
-    ) {
-      // 更新grid
-      this.gridX = gridX
-      this.gridY = gridY
-      this.x = x
-      this.y = y
-
-      this.hasChange = true
+    const parent = this.parent.parent as game
+    if(parent.me == this){
+      parent.iCanGo(gridX, gridY, x, y)
     }
+
+
   }
 
 
