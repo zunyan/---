@@ -1,4 +1,5 @@
-import { AnimatedSprite, Container, Sprite, Text, TextStyle } from "pixi.js";
+import { AnimatedSprite, Container, Loader, Sprite, Text, TextStyle } from "pixi.js";
+import { COMMON_TEXTURE } from "../COMMON";
 import { GRID_HEIGHT, GRID_WIDTH } from "../constant";
 import { TBubbleStyle, TGamePlayerMoveTarget } from "../global.d";
 import game from "../stage/game";
@@ -29,11 +30,13 @@ export default class Person extends Container {
   // style setting
   bubbleStyle: TBubbleStyle = "RANBOW"
   _moveTarget: TGamePlayerMoveTarget = TGamePlayerMoveTarget.None;
+  isMe: boolean;
 
-  constructor(gridX: number, gridY: number, name: string, role: TGameRole) {
+  constructor(gridX: number, gridY: number, name: string, role: TGameRole, isMe: boolean = false) {
     super()
 
     this.zIndex = 2
+    this.isMe = isMe
 
     this.gridX = gridX
     this.gridY = gridY
@@ -62,17 +65,32 @@ export default class Person extends Container {
     this.sprite.gotoAndStop(4)
     this.addChild(this.sprite)
 
-    const text = new Text(name, new TextStyle({
-      fontSize: 14,
-      wordWrap: true,
-      breakWords: true,
-      fill: 0xffffff,
-      strokeThickness: 3,
-    }))
 
-    text.anchor.set(.5, .5)
-    text.y = - this.sprite.height * 0.75 - 15
-    this.addChild(text)
+    if(isMe){
+      const tag = new Sprite(Loader.shared.resources[COMMON_TEXTURE.common_gate].texture)
+      tag.scale.set(.3, .3)
+      tag.anchor.set(.5, .5)
+      tag.x = 0
+      tag.y = - tag.height - 20
+      this.addChild(tag)
+    }else{
+      const text = new Text(name, new TextStyle({
+        fontSize: 14,
+        wordWrap: true,
+        breakWords: true,
+        fill: 0xffffff,
+        strokeThickness: 3,
+      }))
+  
+      text.anchor.set(.5, .5)
+      text.y = - this.sprite.height * 0.75 - 15
+      this.addChild(text)
+  
+    }
+  }
+
+  showTag(){
+
   }
 
   set moveTarget(val: TGamePlayerMoveTarget) {

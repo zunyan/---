@@ -596,7 +596,7 @@ export default class GameStage extends Stage {
     this.addChild(list);
 
     const persons = this.persons = first.players.map(item => {
-      const person = new Person(item.gridX, item.gridY, item.name, item.role)
+      const person = new Person(item.gridX, item.gridY, item.name, item.role, store.name == item.name)
       this.content.addChild(person)
       if (store.name == item.name) {
         this.me = person

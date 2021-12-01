@@ -1,4 +1,5 @@
 import { Sprite, Texture } from "pixi.js"
+import Bubble from "./sprites/bubble"
 import { TGameRole } from "./textureFactory/roleSelectFactory"
 
 interface TPersonTextureMap {
@@ -23,7 +24,7 @@ interface TPersonTextureMap {
 
 interface MapBlock {
     /**
-     * 当前位于改位置的箱体，如果没有，那么会事undefined
+     * 当前位置的箱体，如果没有，那么会是undefined
      */
     block?: Sprite
     floor: string,
